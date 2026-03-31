@@ -4,10 +4,11 @@ require_relative "generators/csharp_generator"
 require_relative "generators/python_generator"
 
 class Generator
-  def initialize(input, lang, url = nil)
+  def initialize(input, lang, url = nil, insecure = false)
     @input = input
     @lang = lang
     @url = url
+    @insecure = insecure
   end
 
   def generate
@@ -26,7 +27,12 @@ class Generator
   private
 
   def fetch_from_url
-    response = Faraday.get(@url)
+    conn = Faraday.new(
+      url: @url,
+      ssl: { verify: !@insecure }
+    )
+
+    response = conn.get
     JSON.parse(response.body)
   end
 end
