@@ -1,47 +1,70 @@
 # frozen_string_literal: true
+require "active_support/core_ext/string/inflections"
 
 class CSharpGenerator
   def initialize(json)
     @json = json
+    @classes = {}
   end
 
   def generate
-    generate_class("Root", @json)
+    process_object("Root", @json)
+
+    @classes.map do |name, body|
+      <<~CSharp
+      public class #{name}
+      {
+      #{body.join("\n")}
+      }
+      CSharp
+    end.join("\n")
   end
 
   private
 
-  def generate_class(name, obj)
+  def process_object(name, obj)
+    return if @classes[name]
+
     props = obj.map do |key, value|
-      type = map_type(value)
+      type = resolve_type(key, value)
       "    public #{type} #{camel_case(key)} { get; set; }"
     end
 
-    <<~CSharp
-    public class #{name}
-    {
-    #{props.join("\n")}
-    }
-    CSharp
+    @classes[name] = props
   end
 
-  def map_type(value)
+  def resolve_type(key, value)
     case value
     when String then "string"
     when Integer then "int"
     when Float then "double"
     when TrueClass, FalseClass then "bool"
-    when Array
-      inner = map_type(value.first)
-      "List<#{inner}>"
+
     when Hash
-      "object"
+      class_name = camel_case(key)
+      process_object(class_name, value)
+      class_name
+
+    when Array
+      return "List<object>" if value.empty?
+
+      first = value.first
+
+      if first.is_a?(Hash)
+        class_name = camel_case(key.singularize)
+        process_object(class_name, first)
+        "List<#{class_name}>"
+      else
+        inner = resolve_type(key, first)
+        "List<#{inner}>"
+      end
+
     else
       "object"
     end
   end
 
   def camel_case(str)
-    str.split('_').map(&:capitalize).join
+    str.to_s.split('_').map(&:capitalize).join
   end
 end
