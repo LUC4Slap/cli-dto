@@ -1,3 +1,6 @@
+require "thor"
+require_relative "generator"
+
 class DtoCLI < Thor
   desc "gerar", "Gera DTO a partir de JSON"
   option :input, required: false

@@ -1,5 +1,7 @@
 require "faraday"
 require_relative "parsers/json_parser"
+require_relative "generators/csharp_generator"
+require_relative "generators/python_generator"
 
 class Generator
   def initialize(input, lang, url = nil)
