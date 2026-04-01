@@ -15,15 +15,21 @@ class TypeScriptGenerator
         @classes[@nome] = ["    items: Array<Item>;"]
       else
         type = resolve_type("item", @json.first)
-        @classes[@nome] = ["    items: Array<#{type}>;"]
+        @classes[@nome] = ["    items: Array<#{type.camelize}>;"]
       end
     else
       process_object(@nome, @json)
     end
 
+    puts "--------------------"
+    @classes.each do |name, body|
+      puts "Class: #{name.camelize}"
+    end
+    puts "--------------------"
+
     @classes.map do |name, body|
       <<~TypeScript
-      export interface #{name} {
+      export interface #{name.camelize} {
       #{body.join("\n")}
       }
       TypeScript
@@ -37,10 +43,10 @@ class TypeScriptGenerator
 
     props = obj.map do |key, value|
       type = resolve_type(key, value)
-      "    #{camel_case(key)}: #{type};"
+      "    #{key}: #{type};"
     end
-
-    @classes[name] = props
+    
+    @classes[name.camelize] = props
   end
 
   def resolve_type(key, value)
@@ -51,9 +57,9 @@ class TypeScriptGenerator
     when TrueClass, FalseClass then "boolean"
 
     when Hash
-      class_name = camel_case(key)
+      class_name = key
       process_object(class_name, value)
-      class_name
+      class_name.camelize
 
     when Array
       return "Array<object>" if value.empty?
@@ -61,12 +67,12 @@ class TypeScriptGenerator
       first = value.first
 
       if first.is_a?(Hash)
-        class_name = camel_case(key.singularize)
+        class_name = key.singularize
         process_object(class_name, first)
-        "Array<#{class_name}>"
+        "Array<#{class_name.camelize}>"
       else
         inner = resolve_type(key, first)
-        "Array<#{inner}>"
+        "Array<#{inner.camelize}>"
       end
 
     else
