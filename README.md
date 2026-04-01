@@ -139,7 +139,7 @@ cli-dto/
 ```
 
 ---
-# Gerar DTO
+# 🤖 Gerar DTO
 ```bash
 dto-cli-dev.bat gerar --url https://jsonplaceholder.typicode.com/users --lang ts --insecure --nome_classe Historico --tipo class
 ```
