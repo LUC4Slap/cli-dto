@@ -5,12 +5,13 @@ require_relative "generators/python_generator"
 require_relative "generators/typescript_generator"
 
 class Generator
-  def initialize(input, lang, url = nil, insecure = false, nome_classe = "Root")
+  def initialize(input, lang, url = nil, insecure = false, nome_classe = "Root", tipo = "interface")
     @input = input
     @lang = lang
     @url = url
     @insecure = insecure
     @nome_classe = nome_classe
+    @tipo = tipo
   end
 
   def generate
@@ -23,7 +24,7 @@ class Generator
     when "py"
       PythonGenerator.new(json).generate
     when "ts"
-      TypeScriptGenerator.new(json, @nome_classe).generate
+      TypeScriptGenerator.new(json, @nome_classe, @tipo).generate
     else
       raise "Linguagem não suportada"
     end

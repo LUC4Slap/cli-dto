@@ -1,9 +1,10 @@
 require "active_support/core_ext/string/inflections"
 
 class TypeScriptGenerator
-  def initialize(json, nome = "Root")
+  def initialize(json, nome = "Root", tipo = "interface")
     @json = json
     @nome = nome
+    @tipo = tipo
     @classes = {}
   end
 
@@ -23,13 +24,13 @@ class TypeScriptGenerator
 
     puts "--------------------"
     @classes.each do |name, body|
-      puts "Class: #{name.camelize}"
+      puts "#{@tipo.capitalize}: #{name.camelize}"
     end
     puts "--------------------"
 
     @classes.map do |name, body|
       <<~TypeScript
-      export interface #{name.camelize} {
+      export #{@tipo} #{name.camelize} {
       #{body.join("\n")}
       }
       TypeScript
