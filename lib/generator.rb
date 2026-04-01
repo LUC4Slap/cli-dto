@@ -5,13 +5,14 @@ require_relative "generators/python_generator"
 require_relative "generators/typescript_generator"
 
 class Generator
-  def initialize(input, lang, url = nil, insecure = false, nome_classe = "Root", tipo = "interface")
+  def initialize(input, lang, url = nil, insecure = false, nome_classe = "Root", tipo = "interface", headers = {})
     @input = input
     @lang = lang
     @url = url
     @insecure = insecure
     @nome_classe = nome_classe
     @tipo = tipo
+    @headers = headers
   end
 
   def generate
@@ -35,7 +36,8 @@ class Generator
   def fetch_from_url
     conn = Faraday.new(
       url: @url,
-      ssl: { verify: !@insecure }
+      ssl: { verify: !@insecure },
+      headers: @headers,
     )
 
     response = conn.get
