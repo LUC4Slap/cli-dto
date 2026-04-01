@@ -10,6 +10,7 @@ class DtoCLI < Thor
   option :url, required: false
   option :lang, required: true
   option :insecure, type: :boolean, default: false
+  option :nome_classe, type: :string, default: "Root"
 
   def gerar
     if options[:input].nil? && options[:url].nil?
@@ -20,7 +21,8 @@ class DtoCLI < Thor
       options[:input],
       options[:lang],
       options[:url],
-      options[:insecure]
+      options[:insecure],
+      options[:nome_classe]
     )
 
     puts generator.generate

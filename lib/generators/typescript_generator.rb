@@ -1,9 +1,9 @@
-# frozen_string_literal: true
 require "active_support/core_ext/string/inflections"
 
-class CSharpGenerator
-  def initialize(json)
+class TypeScriptGenerator
+  def initialize(json, nome = "Root")
     @json = json
+    @nome = nome
     @classes = {}
   end
 
@@ -12,22 +12,21 @@ class CSharpGenerator
       # Se é um array, processa o primeiro elemento
       if @json.first.is_a?(Hash)
         process_object("Item", @json.first)
-        @classes["Root"] = ["    public List<Item> Items { get; set; }"]
+        @classes[@nome] = ["    items: Array<Item>;"]
       else
         type = resolve_type("item", @json.first)
-        @classes["Root"] = ["    public List<#{type}> Items { get; set; }"]
+        @classes[@nome] = ["    items: Array<#{type}>;"]
       end
     else
-      process_object("Root", @json)
+      process_object(@nome, @json)
     end
 
     @classes.map do |name, body|
-      <<~CSharp
-      public class #{name}
-      {
+      <<~TypeScript
+      export interface #{name} {
       #{body.join("\n")}
       }
-      CSharp
+      TypeScript
     end.join("\n")
   end
 
@@ -38,7 +37,7 @@ class CSharpGenerator
 
     props = obj.map do |key, value|
       type = resolve_type(key, value)
-      "    public #{type} #{camel_case(key)} { get; set; }"
+      "    #{camel_case(key)}: #{type};"
     end
 
     @classes[name] = props
@@ -47,9 +46,9 @@ class CSharpGenerator
   def resolve_type(key, value)
     case value
     when String then "string"
-    when Integer then "int"
-    when Float then "double"
-    when TrueClass, FalseClass then "bool"
+    when Integer then "number"
+    when Float then "number"
+    when TrueClass, FalseClass then "boolean"
 
     when Hash
       class_name = camel_case(key)
@@ -57,17 +56,17 @@ class CSharpGenerator
       class_name
 
     when Array
-      return "List<object>" if value.empty?
+      return "Array<object>" if value.empty?
 
       first = value.first
 
       if first.is_a?(Hash)
         class_name = camel_case(key.singularize)
         process_object(class_name, first)
-        "List<#{class_name}>"
+        "Array<#{class_name}>"
       else
         inner = resolve_type(key, first)
-        "List<#{inner}>"
+        "Array<#{inner}>"
       end
 
     else
@@ -76,12 +75,15 @@ class CSharpGenerator
   end
 
   def camel_case(str)
-    # Converte para PascalCase (primeira letra maiúscula)
-    str.to_s
-       .gsub(/[^a-zA-Z0-9_]/, '_')  # substitui caracteres especiais por _
-       .split('_')
-       .reject(&:empty?)
-       .map(&:capitalize)
-       .join
+    # Converte para camelCase (primeira letra minúscula)
+    parts = str.to_s
+               .gsub(/[^a-zA-Z0-9_]/, '_')
+               .split('_')
+               .reject(&:empty?)
+               .map(&:capitalize)
+    
+    return str if parts.empty?
+    parts[0] = parts[0].downcase
+    parts.join
   end
 end

@@ -153,6 +153,18 @@ templates/fastapi/clean/
 Esses templates podem ser copiados diretamente para gerar projetos mais completos e padronizados.
 
 ---
+## Instalar a gem
+```bash
+# Desinstalar caso esteja instalado
+gem uninstall dto-cli
+
+# Buildar a gem
+gem build dto-cli.gemspec
+
+# Instalar a gem
+gem install ./dto-cli-0.1.0.gem
+```
+---
 
 ## 🚀 Roadmap
 

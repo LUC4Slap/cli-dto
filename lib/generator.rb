@@ -2,23 +2,28 @@ require "faraday"
 require_relative "parsers/json_parser"
 require_relative "generators/csharp_generator"
 require_relative "generators/python_generator"
+require_relative "generators/typescript_generator"
 
 class Generator
-  def initialize(input, lang, url = nil, insecure = false)
+  def initialize(input, lang, url = nil, insecure = false, nome_classe = "Root")
     @input = input
     @lang = lang
     @url = url
     @insecure = insecure
+    @nome_classe = nome_classe
   end
 
   def generate
     json = @url ? fetch_from_url : JsonParser.parse(@input)
+    # puts json
 
     case @lang
-    when "csharp"
+    when "cs"
       CSharpGenerator.new(json).generate
-    when "python"
+    when "py"
       PythonGenerator.new(json).generate
+    when "ts"
+      TypeScriptGenerator.new(json, @nome_classe).generate
     else
       raise "Linguagem não suportada"
     end
