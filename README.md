@@ -139,18 +139,62 @@ cli-dto/
 ```
 
 ---
-
-## 🧩 Templates
-
-A pasta `templates/` permite criar **estruturas reutilizáveis** para projetos.
-
-Exemplo:
-
+# Gerar DTO
 ```bash
-templates/fastapi/clean/
+dto-cli-dev.bat gerar --url https://jsonplaceholder.typicode.com/users --lang ts --insecure --nome_classe Historico --tipo class
 ```
+Produzira o seguinte resultado:
+```json
+export class Geo {
+    lat: string;
+    lng: string;
+}
 
-Esses templates podem ser copiados diretamente para gerar projetos mais completos e padronizados.
+export class Address {
+    street: string;
+    suite: string;
+    city: string;
+    zipcode: string;
+    geo: Geo;
+}
+
+export class Company {
+    name: string;
+    catchPhrase: string;
+    bs: string;
+}
+
+export class Item {
+    id: number;
+    name: string;
+    username: string;
+    email: string;
+    address: Address;
+    phone: string;
+    website: string;
+    company: Company;
+}
+
+export class Historico {
+    items: Array<Item>;
+}
+```
+O resultado muda de acordo com a tecnologia passada, atualmente tendo 3 tipos que são
+
+* [x] Typesctipt
+* [x] Csharp
+* [x] Python
+
+## 🧱 Parâmetros
+
+| Parâmetro | Descrição                                         |
+| --------- | ------------------------------------------------- |
+| `--url`    | Url do json                           |
+| `--lang`   | Tecnologia (ex: `ts`, `cs`, `py`) |
+| `--insecure`    | Para não dar problema com o certificado ssl                                   |
+|`--nome_classe` | Para nome da classe final |
+| `--tipo` | Para definir o tipo de entre `interface` ou `class` somente para a tecnologia TypeScript atualmente |
+|`--input` | Caminho do arquivo json que deseja, caso não queira utilizar a requisição http do parametro url|
 
 ---
 ## Instalar a gem
