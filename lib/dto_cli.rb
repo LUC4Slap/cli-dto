@@ -102,8 +102,20 @@ class DtoCLI < Thor
   end
 
   desc "color","Cores possiveis"
-  option :all, type: :boolean, default: false
+  option :virificar_color, type: :string, required: false
   def color
-    puts ColorizedString.colors.join(", ")
+    cores_lib = ColorizedString.colors
+    if !options[:virificar_color].nil?
+      # debugger
+      cor_simbolo = options[:virificar_color].to_sym
+      cor_existe = cores_lib.include?(cor_simbolo)
+      if cor_existe
+        puts "Esta cor #{options[:virificar_color]} pode ser usado com sucesso!".green
+      else
+        puts "Esta cor não se encontra #{options[:virificar_color]}, vefifique as cores permitidas".yellow
+      end
+    else
+      puts cores_lib.join(", ").green
+    end
   end
 end
