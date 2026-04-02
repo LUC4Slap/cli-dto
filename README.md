@@ -187,14 +187,19 @@ O resultado muda de acordo com a tecnologia passada, atualmente tendo 3 tipos qu
 
 ## 🧱 Parâmetros
 
-| Parâmetro | Descrição                                         |
-| --------- | ------------------------------------------------- |
-| `--url`    | Url do json                           |
-| `--lang`   | Tecnologia (ex: `ts`, `cs`, `py`) |
-| `--insecure`    | Para não dar problema com o certificado ssl                                   |
-|`--nome_classe` | Para nome da classe final |
+| Parâmetro | Descrição                                                                                           |
+| --------- |-----------------------------------------------------------------------------------------------------|
+| `--url`    | Url do json                                                                                         |
+| `--lang`   | Tecnologia (ex: `ts`, `cs`, `py`)                                                                   |
+| `--insecure`    | Para não dar problema com o certificado ssl                                                         |
+|`--nome_classe` | Para nome da classe final                                                                           |
 | `--tipo` | Para definir o tipo de entre `interface` ou `class` somente para a tecnologia TypeScript atualmente |
-|`--input` | Caminho do arquivo json que deseja, caso não queira utilizar a requisição http do parametro url|
+|`--input` | Caminho do arquivo json que deseja, caso não queira utilizar a requisição http do parametro url     |
+ | `--db` | Caminho de um aquivo `.sql` para gerar o `dto`                                                      |
+| `--color` | Cor para retorno do `dto`                                                                           |
+ | `--headers` | Headers a serem passados quando o `dto` for utilizado com a opção `--url` |
+| `--query` | Query Params a serem utilizado quando o `dto` for utilizado com a opção `--url` |
+
 
 ---
 ## Instalar a gem
