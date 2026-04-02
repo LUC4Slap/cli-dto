@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require "active_support/core_ext/string/inflections"
+require 'json'
 
 class CSharpGenerator
   def initialize(json)
@@ -23,10 +24,10 @@ class CSharpGenerator
 
     @classes.map do |name, body|
       <<~CSharp
-      public class #{name}
-      {
-      #{body.join("\n")}
-      }
+        public class #{name}
+        {
+        #{body.join("\n")}
+        }
       CSharp
     end.join("\n")
   end

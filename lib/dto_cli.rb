@@ -15,10 +15,11 @@ class DtoCLI < Thor
   option :tipo, type: :string, default: "interface", enum: ["interface", "class"]
   option :headers, type: :string, default: ""
   option :query, type: :string, default: ""
+  option :db, required: false
 
   def gerar
-    if options[:input].nil? && options[:url].nil?
-      raise "Você deve informar --input ou --url"
+    if options[:input].nil? && options[:url].nil? && options[:db].nil?
+      raise "Você deve informar --input ou --url ou --db"
     end
     # debugger
     if (!options[:headers].empty? || !options[:query].empty?) && options[:url].nil?
@@ -33,7 +34,8 @@ class DtoCLI < Thor
       options[:nome_classe],
       options[:tipo],
       options[:headers],
-      options[:query]
+      options[:query],
+      options[:db]
     )
 
     puts generator.generate

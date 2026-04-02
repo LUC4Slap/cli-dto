@@ -1,4 +1,5 @@
 require "active_support/core_ext/string/inflections"
+require 'json'
 
 class TypeScriptGenerator
   def initialize(json, nome = "Root", tipo = "interface")
@@ -30,9 +31,9 @@ class TypeScriptGenerator
 
     @classes.map do |name, body|
       <<~TypeScript
-      export #{@tipo} #{name.camelize} {
-      #{body.join("\n")}
-      }
+        export #{@tipo} #{name.camelize} {
+        #{body.join("\n")}
+        }
       TypeScript
     end.join("\n")
   end

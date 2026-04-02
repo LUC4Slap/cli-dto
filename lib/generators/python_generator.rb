@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require "active_support/core_ext/string/inflections"
+require 'json'
 
 class PythonGenerator
   def initialize(json)
@@ -25,8 +26,8 @@ class PythonGenerator
     
     @classes.map do |name, body|
       result += <<~PY
-      class #{name}(BaseModel):
-      #{body.join("\n")}
+        class #{name}(BaseModel):
+        #{body.join("\n")}
 
       PY
     end
