@@ -101,7 +101,7 @@ class DtoCLI < Thor
     MicroserviceGenerator.new(nome, options[:stack]).generate
   end
 
-  desc "color","Cores possiveis"
+  desc "color [virificar_color]","Cores possiveis"
   option :virificar_color, type: :string, required: false
   def color
     cores_lib = ColorizedString.colors
@@ -112,7 +112,7 @@ class DtoCLI < Thor
       if cor_existe
         puts "Esta cor #{options[:virificar_color]} pode ser usado com sucesso!".green
       else
-        puts "Esta cor não se encontra #{options[:virificar_color]}, vefifique as cores permitidas".yellow
+        puts "Esta cor #{options[:virificar_color]} não se encontra, vefifique as cores permitidas".yellow
       end
     else
       puts cores_lib.join(", ").green
