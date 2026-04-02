@@ -1,6 +1,16 @@
 #!/usr/bin/env ruby
 
 require_relative "../lib/dto_cli"
+require_relative '../lib/error/cli_error'
+require "colorize"
 # require "dto_cli"
 
-DtoCLI.start(ARGV)
+begin
+  DtoCLI.start(ARGV)
+rescue CliError => e
+  puts "❌ Erro: #{e.message}".red
+  exit(1)
+rescue StandardError => e
+  puts "💥 Erro inesperado: #{e.message}"
+  exit(1)
+end

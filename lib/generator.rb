@@ -6,8 +6,9 @@ require_relative "generators/typescript_generator"
 require "json"
 require "byebug"
 
+
 class Generator
-  def initialize(input, lang, url = nil, insecure = false, nome_classe = "Root", tipo = "interface", headers = {}, query = {}, db = nil)
+  def initialize(input, lang, url = nil, insecure = false, nome_classe = "Root", tipo = "interface", headers = {}, query = {}, db = nil, color = "")
     @input = input
     @lang = lang
     @url = url
@@ -16,7 +17,8 @@ class Generator
     @tipo = tipo
     @headers = parse_headers(headers)
     @query = parse_query(query)
-    @db = db
+    @db = db,
+    @color = color
   end
 
   def generate
@@ -27,7 +29,7 @@ class Generator
     elsif @db
       json = processar_sql
     else
-      raise "Error informe um parametro"
+      raise CliError, "Error informe um parametro"
     end
 
     json = json.is_a?(String) ? JSON.parse(json) : json
@@ -40,7 +42,7 @@ class Generator
     when "ts"
       TypeScriptGenerator.new(json, @nome_classe, @tipo).generate
     else
-      raise "Linguagem não suportada"
+      raise CliError, "Linguagem não suportada"
     end
   end
 
@@ -117,13 +119,17 @@ class Generator
   end
 
   def processar_sql
-    sql = File.read(@db)
+    # debugger
+    caminho_cortado = @db[0].split(".")
+    raise CliError, "Arquivo invalido" unless caminho_cortado.include?("sql")
+
+    sql = File.read(@db[0])
     sql = sql.gsub(/--.*$/, '')
 
     tables = sql.scan(/CREATE TABLE.*?;/m)
     # debugger
     if tables.nil? || tables.empty?
-      raise "O sql tem que ser da criação da tabela"
+      raise CliError, "O sql tem que ser da criação da tabela"
     end
 
     tables.each do |table|

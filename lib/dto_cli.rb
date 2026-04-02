@@ -4,27 +4,37 @@ require "tty-prompt"
 require_relative "generators/backend_generator"
 require_relative "generators/frontend_generator"
 require 'byebug'
+require 'colorized_string'
 
 class DtoCLI < Thor
+  def self.exit_on_failure?
+    true
+  end
+
   desc "gerar", "Gera DTO a partir de JSON"
   option :input, required: false
   option :url, required: false
   option :lang, required: true
+  option :db, required: false
   option :insecure, type: :boolean, default: false
   option :nome_classe, type: :string, default: "Root"
   option :tipo, type: :string, default: "interface", enum: ["interface", "class"]
   option :headers, type: :string, default: ""
   option :query, type: :string, default: ""
-  option :db, required: false
+  option :color, type: :string, default: "green", required: false
 
   def gerar
     if options[:input].nil? && options[:url].nil? && options[:db].nil?
-      raise "Você deve informar --input ou --url ou --db"
+      raise CliError, "Você deve informar --input ou --url ou --db"
     end
-    # debugger
+
     if (!options[:headers].empty? || !options[:query].empty?) && options[:url].nil?
-      raise "As options --headers e --query so poder ser passadas com a --url"
+      raise CliError, "As options --headers e --query so poder ser passadas com a --url"
     end
+
+    cores_permitidas = ColorizedString.colors
+    color = (options[:color] || "green").to_sym
+    color = cores_permitidas.include?(color) ? color : "green"
 
     generator = Generator.new(
       options[:input],
@@ -38,7 +48,7 @@ class DtoCLI < Thor
       options[:db]
     )
 
-    puts generator.generate
+    puts generator.generate.send(color)
   end
 
   desc "version", "Mostra a versão da CLI"

@@ -1,5 +1,6 @@
 require "active_support/core_ext/string/inflections"
 require 'json'
+require "colorize"
 
 class TypeScriptGenerator
   def initialize(json, nome = "Root", tipo = "interface")
