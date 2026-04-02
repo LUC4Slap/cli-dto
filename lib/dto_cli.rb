@@ -3,6 +3,7 @@ require_relative "generator"
 require "tty-prompt"
 require_relative "generators/backend_generator"
 require_relative "generators/frontend_generator"
+require 'byebug'
 
 class DtoCLI < Thor
   desc "gerar", "Gera DTO a partir de JSON"
@@ -18,6 +19,10 @@ class DtoCLI < Thor
   def gerar
     if options[:input].nil? && options[:url].nil?
       raise "Você deve informar --input ou --url"
+    end
+    # debugger
+    if (!options[:headers].empty? || !options[:query].empty?) && options[:url].nil?
+      raise "As options --headers e --query so poder ser passadas com a --url"
     end
 
     generator = Generator.new(
