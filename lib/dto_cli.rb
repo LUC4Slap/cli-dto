@@ -57,7 +57,6 @@ class DtoCLI < Thor
   end
 
   desc "init [TIPO] [STACK] [NOME]", "Inicializa projeto"
-
   option :path, type: :string, default: Dir.pwd
   option :clean, type: :boolean, default: false
   option :rabbitmq, type: :boolean, default: false
@@ -100,5 +99,11 @@ class DtoCLI < Thor
   option :stack, default: "dotnet"
   def init_microservice(nome)
     MicroserviceGenerator.new(nome, options[:stack]).generate
+  end
+
+  desc "color","Cores possiveis"
+  option :all, type: :boolean, default: false
+  def color
+    puts ColorizedString.colors.join(", ")
   end
 end
