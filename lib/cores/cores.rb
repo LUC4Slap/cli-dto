@@ -14,10 +14,27 @@ class Cores
     cor_simbolo = @verificar_color.to_sym
     cor_existe = @cores_lib.include?(cor_simbolo)
     if cor_existe
-      puts "Esta cor #{@verificar_color} pode ser usado com sucesso!".green
+      printar_colorido("Esta cor '#{@verificar_color}' pode ser usado com sucesso!", "green")
     else
-      puts "Esta cor #{@verificar_color} não se encontra, vefifique as cores permitidas".yellow
+      printar_colorido("Esta cor '#{@verificar_color}' não se encontra, vefifique as cores permitidas", "yellow")
     end
+  end
+
+  def printar_colorido(texto = "", cor = nil)
+    raise CliError, "Informe uma mensagem" if texto.empty?
+    if !cor.nil?
+      cor = verificar_color(cor) ? cor : "green"
+      puts texto.send(cor)
+    else
+      puts texto.send(@verificar_color)
+    end
+  end
+
+  private
+  def verificar_color(cor = nil)
+    cor_simbolo = cor ? cor.to_sym : @verificar_color.to_sym
+    cor_existe = @cores_lib.include?(cor_simbolo)
+    cor_existe
   end
 
 end
