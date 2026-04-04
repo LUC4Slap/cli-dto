@@ -214,6 +214,23 @@ gem build dto-cli.gemspec
 gem install ./dto-cli-0.1.0.gem
 ```
 ---
+# Histórico
+É gerado um banco de dados sqlite na raiz do projeto para salvar os comando utilizados para historico
+```bash
+./bin/dto-cli-dev historico
+```
+Vai devolver uma resposta assim:
+```txt
+nome: gerar - comando: {"insecure"=>false, "nome_classe"=>"Usuario", "tipo"=>"interface", "headers"=>"", "query"=>"", "color"=>"cyan", "db"=>"../test-cli/schema.sql", "lang"=>"cs"} - criado_em: 2026-04-04 20:37:27
+nome: color - comando: {} - criado_em: 2026-04-04 20:37:35
+nome: gerar - comando: {"insecure"=>false, "nome_classe"=>"Usuario", "tipo"=>"interface", "headers"=>"", "query"=>"", "color"=>"cyan", "db"=>"../test-cli/schema.sql", "lang"=>"cs"} - criado_em: 2026-04-04 20:45:36
+nome: gerar - comando: {"insecure"=>false, "nome_classe"=>"Usuario", "tipo"=>"interface", "headers"=>"", "query"=>"", "color"=>"cyan", "db"=>"../test-cli/schema.sql", "lang"=>"ts"} - criado_em: 2026-04-04 20:45:45
+```
+|parametro | Descrição|
+|--------- | ---------|
+| `--query`| query de busca no banco, a clausula where é colocada automaticamente, tem que mandar somente a condição de busca |
+
+---
 
 ## 🚀 Roadmap
 
