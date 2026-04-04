@@ -5,6 +5,7 @@ require_relative "generators/backend_generator"
 require_relative "generators/frontend_generator"
 require 'byebug'
 require 'colorized_string'
+require_relative 'cores/cores'
 
 class DtoCLI < Thor
   def self.exit_on_failure?
@@ -104,18 +105,11 @@ class DtoCLI < Thor
   desc "color [verificar_color]","Cores possiveis"
   option :verificar_color, type: :string, required: false
   def color
-    cores_lib = ColorizedString.colors
+    color = Cores.new(options[:verificar_color])
     if !options[:verificar_color].nil?
-      # debugger
-      cor_simbolo = options[:verificar_color].to_sym
-      cor_existe = cores_lib.include?(cor_simbolo)
-      if cor_existe
-        puts "Esta cor #{options[:virificar_color]} pode ser usado com sucesso!".green
-      else
-        puts "Esta cor #{options[:virificar_color]} não se encontra, vefifique as cores permitidas".yellow
-      end
+      color.verificar_se_cor_existe
     else
-      puts cores_lib.join(", ").green
+      color.cores_existentes
     end
   end
 end
