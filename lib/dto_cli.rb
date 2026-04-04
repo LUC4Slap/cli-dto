@@ -6,10 +6,16 @@ require_relative "generators/frontend_generator"
 require 'byebug'
 require 'colorized_string'
 require_relative 'cores/cores'
+require_relative 'db/data_base'
 
 class DtoCLI < Thor
   def self.exit_on_failure?
     true
+  end
+
+  def initialize(args = nil, options = nil, config = nil)
+    super
+    @banco = Database.new
   end
 
   desc "gerar", "Gera DTO a partir de JSON"
@@ -48,7 +54,7 @@ class DtoCLI < Thor
       options[:query],
       options[:db]
     )
-
+    @banco.salvar_comando("gerar", options.to_s)
     puts generator.generate.send(color)
   end
 
@@ -84,8 +90,10 @@ class DtoCLI < Thor
 
     case tipo
     when "frontend"
+      @banco.salvar_comando("init frontend", options.to_s)
       FrontendGenerator.new(stack, nome, path).generate
     when "backend"
+      @banco.salvar_comando("init backend", options.to_s)
       BackendGenerator.new(
         stack,
         nome,
@@ -99,6 +107,7 @@ class DtoCLI < Thor
   desc "init microservice NOME", "Cria arquitetura de microserviços"
   option :stack, default: "dotnet"
   def init_microservice(nome)
+    @banco.salvar_comando("init microservice", options.to_s)
     MicroserviceGenerator.new(nome, options[:stack]).generate
   end
 
@@ -107,9 +116,19 @@ class DtoCLI < Thor
   def color
     color = Cores.new(options[:verificar_color])
     if !options[:verificar_color].nil?
+      @banco.salvar_comando("color", options.to_s)
       color.verificar_se_cor_existe
     else
+      @banco.salvar_comando("color", options.to_s)
       color.cores_existentes
+    end
+  end
+
+  desc "historico", "lista historico de comandos"
+  option :query, type: :string, required: false
+  def historico
+    @banco.listar_comandos(options[:query]).map do |id, nome, comando, data|
+      puts "nome: #{nome} - comando: #{comando} - criado_em: #{data}"
     end
   end
 end

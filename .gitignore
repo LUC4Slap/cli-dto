@@ -35,6 +35,9 @@ Gemfile.lock
 .idea/
 *.iml
 
+# Arquivo do banco
+*.db
+
 # Mac
 .DS_Store
 .AppleDouble
