@@ -1,150 +1,115 @@
-# 🚀 DTO CLI
+# DTO CLI
 
-Uma ferramenta de linha de comando desenvolvida em **Ruby** para acelerar a criação de projetos **frontend e backend**, com suporte a múltiplas tecnologias e geração automática de estruturas arquiteturais (incluindo microserviços).
+Ferramenta de linha de comando em **Ruby** para gerar DTOs a partir de JSON/SQL e scaffold projetos frontend/backend com suporte a Clean Architecture e microservicos.
 
 ---
 
-## 📦 Instalação
+## Índice
 
-Clone o repositório:
+- [Instalação](#instalacao)
+- [Comandos disponíveis](#comandos-disponiveis)
+  - [gerar](#-gerar-dto)
+  - [init](#-inicializar-projeto)
+  - [init microservice](#-arquitetura-de-microservicos)
+  - [color](#-cores)
+  - [historico](#-historico-de-comandos)
+  - [version](#-versao)
+- [Tecnologias suportadas](#tecnologias-suportadas)
+- [Estrutura do projeto](#estrutura-do-projeto)
+- [Roadmap](#roadmap)
+- [Contribuição](#contribuicao)
+- [Licença](#licenca)
+
+---
+
+## Instalacao
+
+### Via Gem (recomendado)
 
 ```bash
 git clone https://github.com/LUC4Slap/cli-dto
 cd cli-dto
-```
-
-Instale as dependências:
-
-```bash
 bundle install
+gem build dto-cli.gemspec
+gem install ./dto-cli-0.1.0.gem
 ```
 
-Execute diretamente:
+Após instalar, use o comando globalmente:
 
 ```bash
-./bin/dto-cli.rb
+dto-cli-dev gerar --url https://jsonplaceholder.typicode.com/users --lang ts --nome_classe Usuario
 ```
 
----
-
-## ⚙️ Uso
-
-### 🔹 Inicializar um projeto
+### Via repositório
 
 ```bash
-./bin/dto-cli.rb init [TIPO] [STACK] [NOME] [OPÇÕES]
+git clone https://github.com/LUC4Slap/cli-dto
+cd cli-dto
+bundle install
+./bin/dto-cli-dev
 ```
 
----
+### Dependências
 
-## 🧱 Parâmetros
-
-| Parâmetro | Descrição                                         |
-| --------- | ------------------------------------------------- |
-| `TIPO`    | `frontend` ou `backend`                           |
-| `STACK`   | Tecnologia (ex: `dotnet`, `fastapi`, `node`, etc) |
-| `NOME`    | Nome do projeto                                   |
-
----
-
-## 🧩 Opções
-
-| Flag         | Descrição                                          |
-| ------------ | -------------------------------------------------- |
-| `--path`     | Caminho onde o projeto será criado                 |
-| `--clean`    | Gera estrutura de arquitetura (microserviços)      |
-| `--rabbitmq` | (Em desenvolvimento) Adiciona suporte a mensageria |
+| Gem        | Uso                                       |
+| ---------- | ----------------------------------------- |
+| `thor`     | Framework CLI                             |
+| `faraday`  | Requisições HTTP                          |
+| `activesupport` | Inflector e utilitários              |
+| `colorize` | Output colorido no terminal               |
+| `tty-prompt` | Prompts interativos                    |
+| `sqlite3`  | Persistência do histórico de comandos     |
 
 ---
 
-## 💻 Exemplos
-
-### Backend .NET com Clean Architecture
+## Comandos disponíveis
 
 ```bash
-./bin/dto-cli.rb init backend dotnet api \
-  --clean \
-  --path ../projetos
+dto-cli-dev <comando> [argumentos] [opcoes]
 ```
 
----
+Use `dto-cli-dev help` para ver todos os comandos.
 
-### Backend FastAPI com estrutura
+### `gerar` — DTO
+
+Gera DTOs a partir de uma URL JSON, arquivo local ou schema SQL.
 
 ```bash
-./bin/dto-cli.rb init backend fastapi api \
-  --clean
+dto-cli-dev gerar --url <URL> --lang <LINGUAGEM> [opcoes]
+dto-cli-dev gerar --input <ARQUIVO> --lang <LINGUAGEM> [opcoes]
+dto-cli-dev gerar --db <ARQUIVO.SQL> --lang <LINGUAGEM> [opcoes]
 ```
 
----
+**Opções:**
 
-### Frontend React
+| Flag              | Padrão       | Descrição                                                            |
+| ----------------- | ------------ | -------------------------------------------------------------------- |
+| `--url`           | —            | URL do JSON para gerar o DTO                                         |
+| `--input`         | —            | Caminho para arquivo JSON local                                      |
+| `--db`            | —            | Caminho para arquivo `.sql` para gerar o DTO                         |
+| `--lang` **(req)**| —            | Linguagem de saída: `ts`, `cs`, `py`                                 |
+| `--nome_classe`   | `Root`       | Nome da classe final                                                 |
+| `--tipo`          | `interface`  | Tipo de saída para TypeScript: `interface` ou `class`                |
+| `--insecure`      | `false`      | Ignora validação de certificado SSL                                  |
+| `--headers`       | —            | Headers customizados para requisição (requer `--url`)                |
+| `--query`         | —            | Query params para requisição (requer `--url`)                        |
+| `--color`         | `green`      | Cor do output no terminal                                            |
+
+**Exemplo:**
 
 ```bash
-./bin/dto-cli.rb init frontend react web-app
+dto-cli-dev gerar \
+  --url https://jsonplaceholder.typicode.com/users \
+  --lang ts \
+  --insecure \
+  --nome_classe Historico \
+  --tipo class \
+  --color cyan
 ```
 
----
+**Saída (TypeScript com `--tipo class`):**
 
-## 🏗️ Estrutura gerada (`--clean`)
-
-```bash
-projeto/
-├── microservices/
-│   └── api-exemplo/
-├── services/
-│   └── service-exemplo/
-├── infra/
-│   └── infra-exemplo/
-├── common/
-│   └── common-exemplo/
-```
-
----
-
-## 🧠 Tecnologias suportadas
-
-### Backend
-
-* .NET
-* Node.js
-* NestJS
-* FastAPI
-* Flask
-* Rails
-
-### Frontend
-
-* Angular
-* React
-* Next.js
-* Vue
-* Nuxt
-
----
-
-## 📁 Estrutura do CLI
-
-```bash
-cli-dto/
-├── bin/
-│   └── dto-cli.rb
-├── lib/
-│   ├── dto_cli.rb
-│   ├── generators/
-│   │   ├── backend_generator.rb
-│   │   ├── frontend_generator.rb
-│   ├── utils/
-│   └── templates/
-```
-
----
-# 🤖 Gerar DTO
-```bash
-dto-cli-dev.bat gerar --url https://jsonplaceholder.typicode.com/users --lang ts --insecure --nome_classe Historico --tipo class
-```
-Produzira o seguinte resultado:
-```json
+```typescript
 export class Geo {
     lat: string;
     lng: string;
@@ -179,82 +144,225 @@ export class Historico {
     items: Array<Item>;
 }
 ```
-O resultado muda de acordo com a tecnologia passada, atualmente tendo 3 tipos que são
 
-* [x] Typesctipt
-* [x] Csharp
-* [x] Python
+**Linguagens suportadas para geração de DTO:**
 
-## 🧱 Parâmetros
-
-| Parâmetro | Descrição                                                                                           |
-| --------- |-----------------------------------------------------------------------------------------------------|
-| `--url`    | Url do json                                                                                         |
-| `--lang`   | Tecnologia (ex: `ts`, `cs`, `py`)                                                                   |
-| `--insecure`    | Para não dar problema com o certificado ssl                                                         |
-|`--nome_classe` | Para nome da classe final                                                                           |
-| `--tipo` | Para definir o tipo de entre `interface` ou `class` somente para a tecnologia TypeScript atualmente |
-|`--input` | Caminho do arquivo json que deseja, caso não queira utilizar a requisição http do parametro url     |
- | `--db` | Caminho de um aquivo `.sql` para gerar o `dto`                                                      |
-| `--color` | Cor para retorno do `dto`                                                                           |
- | `--headers` | Headers a serem passados quando o `dto` for utilizado com a opção `--url` |
-| `--query` | Query Params a serem utilizado quando o `dto` for utilizado com a opção `--url` |
-
+| Flag `--lang` | Linguagem    |
+| ------------- | ------------ |
+| `ts`          | TypeScript   |
+| `cs`          | C#           |
+| `py`          | Python       |
 
 ---
-## Instalar a gem
+
+### `init` — Inicializar projeto
+
+Cria um projeto frontend ou backend com scaffolding automático.
+
 ```bash
-# Desinstalar caso esteja instalado
-gem uninstall dto-cli
-
-# Buildar a gem
-gem build dto-cli.gemspec
-
-# Instalar a gem
-gem install ./dto-cli-0.1.0.gem
+dto-cli-dev init [TIPO] [STACK] [NOME] [opcoes]
 ```
+
+Se omitidos, `TIPO`, `STACK` e `NOME` são solicitados interativamente.
+
+**Argumentos posicionais:**
+
+| Posição | Descrição                                     |
+| ------- | --------------------------------------------- |
+| `TIPO`  | `frontend` ou `backend`                       |
+| `STACK` | Tecnologia (ex: `dotnet`, `fastapi`, `react`) |
+| `NOME`  | Nome do projeto                               |
+
+**Opções:**
+
+| Flag         | Padrão    | Descrição                                              |
+| ------------ | --------- | ------------------------------------------------------ |
+| `--path`     | `Dir.pwd`| Caminho onde o projeto será criado                     |
+| `--clean`    | `false`   | Gera estrutura Clean Architecture com microservicos    |
+| `--rabbitmq` | `false`   | Adiciona suporte a mensageria RabbitMQ                 |
+
+**Exemplos:**
+
+```bash
+# Backend .NET com Clean Architecture
+dto-cli-dev init backend dotnet minha-api --clean --path ../projetos
+
+# Backend FastAPI
+dto-cli-dev init backend fastapi minha-api --clean
+
+# Frontend React
+dto-cli-dev init frontend react web-app
+
+# Modo interativo (sem argumentos)
+dto-cli-dev init
+```
+
 ---
-# Histórico
-É gerado um banco de dados sqlite na raiz do projeto para salvar os comando utilizados para historico
+
+### `init microservice` — Arquitetura de microservicos
+
+Cria uma estrutura de microservicos.
+
 ```bash
-./bin/dto-cli-dev historico
+dto-cli-dev init microservice <NOME> --stack <STACK>
 ```
-Vai devolver uma resposta assim:
-```txt
-nome: gerar - comando: {"insecure"=>false, "nome_classe"=>"Usuario", "tipo"=>"interface", "headers"=>"", "query"=>"", "color"=>"cyan", "db"=>"../test-cli/schema.sql", "lang"=>"cs"} - criado_em: 2026-04-04 20:37:27
+
+**Opções:**
+
+| Flag     | Padrão   | Descrição                |
+| -------- | -------- | ------------------------ |
+| `--stack`| `dotnet` | Tecnologia do microserviço |
+
+**Exemplo:**
+
+```bash
+dto-cli-dev init microservice servico-pagamento --stack dotnet
+```
+
+---
+
+### `color` — Cores
+
+Lista as cores disponíveis ou verifica se uma cor existe.
+
+```bash
+# Listar todas as cores disponíveis
+dto-cli-dev color
+
+# Verificar se uma cor específica existe
+dto-cli-dev color --verificar-color red
+```
+
+---
+
+### `historico` — Histórico de comandos
+
+Lista os comandos executados anteriormente, salvos em um banco SQLite (`comandos.db`).
+
+```bash
+dto-cli-dev historico [opcoes]
+```
+
+**Opções:**
+
+| Flag      | Descrição                                              |
+| --------- | ------------------------------------------------------ |
+| `--query` | Filtro SQL para a cláusula WHERE (sem o `WHERE`)       |
+
+**Exemplos:**
+
+```bash
+# Listar todo o histórico
+dto-cli-dev historico
+
+# Filtrar por tipo de comando
+dto-cli-dev historico --query "nome LIKE '%gerar%'"
+
+# Filtrar por data
+dto-cli-dev historico --query "criado_em > '2026-04-04 20:00:00'"
+```
+
+**Saída:**
+
+```
+nome: gerar - comando: {"insecure"=>false, "nome_classe"=>"Usuario", "lang"=>"cs", ...} - criado_em: 2026-04-04 20:37:27
 nome: color - comando: {} - criado_em: 2026-04-04 20:37:35
-nome: gerar - comando: {"insecure"=>false, "nome_classe"=>"Usuario", "tipo"=>"interface", "headers"=>"", "query"=>"", "color"=>"cyan", "db"=>"../test-cli/schema.sql", "lang"=>"cs"} - criado_em: 2026-04-04 20:45:36
-nome: gerar - comando: {"insecure"=>false, "nome_classe"=>"Usuario", "tipo"=>"interface", "headers"=>"", "query"=>"", "color"=>"cyan", "db"=>"../test-cli/schema.sql", "lang"=>"ts"} - criado_em: 2026-04-04 20:45:45
+nome: gerar - comando: {"insecure"=>false, "nome_classe"=>"Usuario", "lang"=>"ts", ...} - criado_em: 2026-04-04 20:45:45
 ```
-|parametro | Descrição|
-|--------- | ---------|
-| `--query`| query de busca no banco, a clausula where é colocada automaticamente, tem que mandar somente a condição de busca |
 
 ---
 
-## 🚀 Roadmap
+### `version` — Versão
 
-* [ ] Suporte completo a RabbitMQ
-* [ ] Templates avançados por stack
-* [ ] Geração de código (controllers, services, etc.)
-* [ ] Nomes dinâmicos baseados no projeto
-* [ ] CLI instalável globalmente (`gem install`)
-* [ ] Suporte a Docker / Docker Compose
+Exibe a versão instalada do CLI.
+
+```bash
+dto-cli-dev version
+```
 
 ---
 
-## 🤝 Contribuição
+## Tecnologias suportadas
+
+### Backend (comando `init`)
+
+| Stack    | Framework          |
+| -------- | ------------------ |
+| `dotnet` | .NET               |
+| `node`   | Node.js            |
+| `nest`   | NestJS             |
+| `fastapi`| FastAPI (Python)   |
+| `flask`  | Flask (Python)     |
+| `rails`  | Ruby on Rails      |
+
+### Frontend (comando `init`)
+
+| Stack    | Framework     |
+| -------- | ------------- |
+| `angular`| Angular       |
+| `react`  | React         |
+| `next`   | Next.js       |
+| `vue`    | Vue.js        |
+| `nuxt`   | Nuxt.js       |
+
+---
+
+## Estrutura do projeto
+
+```
+cli-dto/
+├── bin/
+│   └── dto-cli-dev                 # Ponto de entrada do CLI
+├── lib/
+│   ├── dto_cli.rb                  # Classe principal Thor com os comandos
+│   ├── generator.rb                # Gerador genérico de DTO
+│   ├── generators/
+│   │   ├── backend_generator.rb    # Scaffold de projetos backend
+│   │   ├── frontend_generator.rb   # Scaffold de projetos frontend
+│   │   ├── microservice_generator.rb # Estrutura de microservicos
+│   │   ├── typescript_generator.rb # Gerador DTO TypeScript
+│   │   ├── csharp_generator.rb     # Gerador DTO C#
+│   │   └── python_generator.rb     # Gerador DTO Python
+│   ├── parsers/
+│   │   └── json_parser.rb          # Parser e inferência de tipos
+│   ├── db/
+│   │   └── data_base.rb            # Persistência SQLite do histórico
+│   ├── utils/
+│   │   └── env_generator.rb        # Geração de variáveis de ambiente
+│   ├── cores/
+│   │   └── cores.rb                | Validação e listagem de cores
+│   └── error/
+│       └── cli_error.rb            # Tratamento customizado de erros
+├── Gemfile
+├── dto-cli.gemspec
+└── comandos.db                     # Banco SQLite do histórico
+```
+
+---
+
+## Roadmap
+
+- [ ] Templates avançados por stack
+- [ ] Geração de código (controllers, services, etc.)
+- [ ] Suporte a Docker / Docker Compose
+- [ ] Gerar DTO para outras linguagens (Go, Java, Rust, etc.)
+- [ ] Validação de schemas gerados
+- [ ] Testes automatizados
+
+---
+
+## Contribuicao
 
 Sinta-se livre para abrir PRs ou sugerir melhorias.
 
 ---
 
-## 📄 Licença
+## Licenca
 
 MIT
 
 ---
 
-## 👨‍💻 Autor
+## Autor
 
 Desenvolvido por **Lucas Almeida**
