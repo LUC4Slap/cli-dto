@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DTO CLI - Gere DTOs e Scaffolds Automaticamente</title>
+  <meta name="description" content="Transforme JSON/SQL em DTOs em segundos. Scaffold projetos backend e frontend com um comando. Open source e free.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar" id="navbar">
+    <div class="container nav-content">
+      <a href="#" class="nav-logo">
+        <span class="logo-icon">&#123;&#125;</span>
+        DTO CLI
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Recursos</a></li>
+        <li><a href="#how-it-works">Como Funciona</a></li>
+        <li><a href="#pricing">Precos</a></li>
+        <li><a href="https://github.com/LUC4Slap/cli-dto" target="_blank">GitHub</a></li>
+      </ul>
+      <div class="nav-actions">
+        <a href="https://github.com/LUC4Slap/cli-dto" class="btn-ghost">Comece Gratis</a>
+        <a href="#pricing" class="btn-primary">Assine o Pro</a>
+      </div>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu de navegacao">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container hero-content">
+      <div class="hero-badge">
+        <span class="badge-dot"></span>
+        Open Source &bull; v0.1.0
+      </div>
+      <h1>
+        Gere DTOs e Scaffolds<br>
+        <span class="text-gradient">em Segundos</span>
+      </h1>
+      <p class="hero-description">
+        Transforme JSON, URLs e schemas SQL em DTOs tipados automaticamente.
+        Scaffold projetos backend e frontend com um comando.
+        <strong>Ruby, CLI, sem burocracia.</strong>
+      </p>
+      <div class="hero-actions">
+        <a href="https://github.com/LUC4Slap/cli-dto" class="btn-primary btn-lg">
+          <svg class="icon" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          Instalar via Gem
+        </a>
+        <a href="https://github.com/LUC4Slap/cli-dto" class="btn-outline btn-lg">
+          Ver no GitHub
+        </a>
+      </div>
+    </div>
+
+    <!-- Terminal Preview -->
+    <div class="hero-terminal">
+      <div class="terminal">
+        <div class="terminal-header">
+          <span class="dot red"></span>
+          <span class="dot yellow"></span>
+          <span class="dot green"></span>
+          <span class="terminal-title">dto-cli-dev</span>
+        </div>
+        <div class="terminal-body">
+          <div class="terminal-line">
+            <span class="prompt">$</span>
+            <span class="command">dto-cli-dev gerar </span><span class="flag">--url </span><span class="value">https://api.exemplo.com/usuarios</span><span class="flag"> --lang </span><span class="value">ts </span><span class="flag">--nome_classe </span><span class="value">Usuario</span><span class="flag"> --tipo </span><span class="value">class</span>
+          </div>
+          <div class="terminal-output">
+<span class="keyword">export class</span> <span class="typ">Geo</span> {
+  <span class="prop">lat</span>: <span class="typ">string</span>;
+  <span class="prop">lng</span>: <span class="typ">string</span>;
+}
+
+<span class="keyword">export class</span> <span class="typ">Usuario</span> {
+  <span class="prop">id</span>: <span class="typ">number</span>;
+  <span class="prop">nome</span>: <span class="typ">string</span>;
+  <span class="prop">email</span>: <span class="typ">string</span>;
+  <span class="prop">endereco</span>: <span class="typ">Geo</span>;
+}
+          </div>
+          <div class="terminal-cursor">
+            <span class="prompt">$</span>
+            <span class="cursor-blink">&nbsp;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Logos / Trust Bar -->
+  <section class="trust-bar">
+    <div class="container">
+      <p class="trust-label">Suportado nas stacks que voce ja usa</p>
+      <div class="trust-logos">
+        <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/typescript/typescript-original.svg" alt="TypeScript"> TypeScript</span>
+        <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dotnetcore/dotnetcore-original.svg" alt="C#"> C#</span>
+        <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python"> Python</span>
+        <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" alt="Node.js"> Node.js</span>
+        <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="React"> React</span>
+        <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" alt="Next.js"> Next.js</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="features" id="features">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Recursos</span>
+        <h2>Do JSON ao DTO.<br>Do scaffold ao deploy.</h2>
+        <p class="section-description">
+          Duas ferramentas em uma: gerador de DTOs inteligente + scaffold de projetos com Clean Architecture e microservicos.
+        </p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <h3>JSON to DTO</h3>
+          <p>Envie uma URL de qualquer JSON API e receba DTOs tipados automaticamente em TypeScript, C# ou Python.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
+          </div>
+          <h3>SQL to DTO</h3>
+          <p>Aponte para um schema SQL e gere DTOs automaticamente. Ideal para quem migra de sistemas legacy.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20"/><path d="M5 20V8l7-5 7 5v12"/><path d="M9 20v-4h6v4"/><path d="M9 12h6"/></svg>
+          </div>
+          <h3>Scaffold de Projetos</h3>
+          <p>Crie a estrutura de projetos backend (.NET, FastAPI, Rails, NestJS) e frontend (React, Vue, Angular, Next) em segundos.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><circle cx="6" cy="6" r="1"/><circle cx="6" cy="18" r="1"/></svg>
+          </div>
+          <h3>Clean Architecture</h3>
+          <p>Use <code>--clean</code> para gerar projetos com estrutura de microservicos, separacao por camadas e boas praticas.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Open Source</h3>
+          <p>Projeto aberto, feito pela comunidade e para a comunidade. Contribua, reporte bugs e sugira melhorias.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <h3>Historico de Comandos</h3>
+          <p>Banco SQLite local salva seu historico de comandos para referencia futura e consulta rapida.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="how-it-works" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Como Funciona</span>
+        <h2>Dois comandos.<br>Produtividade infinita.</h2>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <h3>Instale a CLI</h3>
+          <div class="code-block">
+            <code>gem install ./dto-cli-0.1.0.gem</code>
+          </div>
+        </div>
+        <div class="step-arrow">
+          <svg viewBox="0 0 60 40" fill="none" stroke="currentColor" stroke-width="2"><line x1="0" y1="20" x2="45" y2="20"/><polyline points="35 10 50 20 35 30"/></svg>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <h3>Gere um DTO</h3>
+          <div class="code-block">
+            <code>dto-cli-dev gerar --url https://api.exemplo.com/dados --lang ts</code>
+          </div>
+        </div>
+        <div class="step-arrow">
+          <svg viewBox="0 0 60 40" fill="none" stroke="currentColor" stroke-width="2"><line x1="0" y1="20" x2="45" y2="20"/><polyline points="35 10 50 20 35 30"/></svg>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <h3>Scaffold do projeto</h3>
+          <div class="code-block">
+            <code>dto-cli-dev init backend dotnet minha-api --clean</code>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-label">Precos</span>
+        <h2>Gratis para quem<br>ta comecando. Pro para quem escala.</h2>
+        <p class="section-description">
+          A versao community e para sempre gratis. O plano Pro desbloqueia tudo.
+        </p>
+      </div>
+      <div class="pricing-grid">
+        <!-- Free -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3>Community</h3>
+            <div class="pricing-price">Gratis</div>
+            <p>Para desenvolvedores que querem agilidade no dia a dia.</p>
+          </div>
+          <ul class="pricing-features">
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Gerador de DTO a partir de JSON</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> TypeScript, C# e Python</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Scaffold de projetos frontend/backend</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Output colorido no terminal</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Historico de comandos (SQLite local)</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Open Source (MIT License)</li>
+          </ul>
+          <a href="https://github.com/LUC4Slap/cli-dto" class="btn-outline btn-full">Comecar Gratis</a>
+        </div>
+
+        <!-- Pro -->
+        <div class="pricing-card featured">
+          <div class="pricing-badge">Mais Popular</div>
+          <div class="pricing-header">
+            <h3>Pro</h3>
+            <div class="pricing-price">
+              <span class="price-currency">R$</span>
+              <span class="price-value">29</span>
+              <span class="price-period">/mes</span>
+            </div>
+            <p>Para times e devs que precisam de produtividade em escala.</p>
+          </div>
+          <ul class="pricing-features">
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> <strong>Tudo do Community</strong> e mais:</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> DTO a partir de SQL Schema</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Geracao de Controllers e Services</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Templates personalizados</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Geracao de Docker e Docker Compose</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Historico na nuvem (sync entre maquinas)</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Suporte prioritario via Discord</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Novas linguagens: Go, Java, Rust</li>
+          </ul>
+          <a href="#contact" class="btn-primary btn-full">Assinar Pro</a>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="pricing-card">
+          <div class="pricing-header">
+            <h3>Enterprise</h3>
+            <div class="pricing-price">Sob consulta</div>
+            <p>Para grandes times que precisam de controle e compliance.</p>
+          </div>
+          <ul class="pricing-features">
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> <strong>Tudo do Pro</strong> e mais:</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Licenciamento por equipe</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Templates customizados da empresa</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> SSO / SAML</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> On-premises (sem cloud)</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> SLA e suporte dedicado</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Audit e compliance logs</li>
+          </ul>
+          <a href="#contact" class="btn-outline btn-full">Falar com Vendas</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <div class="container">
+      <div class="cta-content">
+        <h2>Pronto para parar de escrever DTOs manualmente?</h2>
+        <p>Instale a CLI, rode um comando e tenha o resultado em segundos. Open source, gratuito e sem setup.</p>
+        <div class="quick-install">
+          <code>gem install dto-cli</code>
+          <button class="copy-btn" id="copyBtn" aria-label="Copiar comando">
+            <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+          <span class="copy-feedback" id="copyFeedback">Copiado!</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-content">
+      <div class="footer-brand">
+        <a href="#" class="footer-logo">
+          <span class="logo-icon">&#123;&#125;</span>
+          DTO CLI
+        </a>
+        <p>Ferramenta de linha de comando para gerar DTOs e scaffolds automaticamente.</p>
+        <div class="footer-social">
+          <a href="https://github.com/LUC4Slap/cli-dto" target="_blank" aria-label="GitHub">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div>
+          <h4>Produto</h4>
+          <a href="#features">Recursos</a>
+          <a href="#pricing">Precos</a>
+          <a href="#how-it-works">Como Funciona</a>
+        </div>
+        <div>
+          <h4>Open Source</h4>
+          <a href="https://github.com/LUC4Slap/cli-dto">GitHub</a>
+          <a href="#">Documentacao</a>
+          <a href="#">Changelog</a>
+        </div>
+        <div>
+          <h4>Contato</h4>
+          <a href="mailto:contato@dtocli.dev">Email</a>
+          <a href="#">Discord</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2026 DTO CLI. Licenca MIT. Feito por <a href="https://github.com/LUC4Slap">Lucas Almeida</a>.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
