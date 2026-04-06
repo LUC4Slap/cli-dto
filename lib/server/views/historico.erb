@@ -1,0 +1,35 @@
+<div class="container">
+  <div class="page-header">
+    <div>
+      <h1>Historico de DTOs</h1>
+      <p>DTOs salvos no banco</p>
+    </div>
+    <a href="/dto/novo" class="btn btn-accent">+ Novo DTO</a>
+  </div>
+
+  <% if @dtos.nil? || @dtos.empty? %>
+    <div class="empty-state">
+      <h3>Nenhum DTO salvo ainda</h3>
+      <p>Crie seu primeiro DTO a partir de um JSON</p>
+      <a href="/dto/novo" class="btn btn-accent">Gerar primeiro DTO</a>
+    </div>
+  <% else %>
+    <div class="dto-list">
+      <% @dtos.each do |dto| %>
+        <div class="dto-item">
+          <div class="dto-info">
+            <span class="dto-lang-badge"><%= e(dto[:lang]) %></span>
+            <span class="dto-name"><%= e(dto[:nome]) %></span>
+            <span class="dto-time"><%= e(dto[:criado_em] || '') %></span>
+          </div>
+          <div class="dto-actions">
+            <a href="/dto/<%= dto[:id] %>" class="btn">Ver</a>
+            <form action="/dto/delete/<%= dto[:id] %>" method="POST" style="display:inline;">
+              <button type="submit" class="btn btn-danger" onclick="return confirm('Deletar este DTO?')">X</button>
+            </form>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

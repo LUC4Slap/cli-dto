@@ -1,0 +1,122 @@
+<div class="container">
+  <div class="page-header">
+    <div>
+      <h1>Gerar</h1>
+      <p>DTOs, Dockerfiles ou docker-compose</p>
+    </div>
+  </div>
+
+  <% if @erro %>
+    <div class="erro-msg"><%= e(@erro) %></div>
+  <% end %>
+
+  <div style="display: flex; gap: 12px; margin-bottom: 32px;">
+    <button class="btn btn-accent" id="tab-dto" onclick="switchTab('dto')">DTO</button>
+    <button class="btn" id="tab-docker" onclick="switchTab('docker')">Docker Compose</button>
+  </div>
+
+  <!-- ======================== DTO FORM ======================== -->
+  <form action="/dto/gerar" method="POST" id="form-dto" style="display:none;">
+    <label for="json_payload">JSON *</label>
+    <textarea name="json_payload" id="json_payload" placeholder='{"id": 1, "nome": "exemplo", "ativo": true}'><%= params["json_payload"] ? e(params["json_payload"]) : '' %></textarea>
+
+    <div class="form-row">
+      <div>
+        <label for="lang">Linguagem</label>
+        <select name="lang" id="lang">
+          <option value="ts">TypeScript</option>
+          <option value="cs">C#</option>
+          <option value="py">Python</option>
+          <option value="go">Go</option>
+          <option value="java">Java</option>
+          <option value="kotlin">Kotlin</option>
+          <option value="swift">Swift</option>
+          <option value="rust">Rust</option>
+        </select>
+      </div>
+      <div>
+        <label for="tipo">Tipo (TypeScript)</label>
+        <select name="tipo" id="tipo">
+          <option value="interface">Interface</option>
+          <option value="class">Class</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div>
+        <label for="nome">Nome da classe</label>
+        <input type="text" name="nome" id="nome" value="Root" placeholder="Root">
+      </div>
+      <div>
+        <label for="nome_salvo">Salvar com nome</label>
+        <input type="text" name="nome_salvo" id="nome_salvo" placeholder="Ex: UsuarioResponse">
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-accent">Gerar DTO</button>
+      <a href="/" class="btn">Cancelar</a>
+    </div>
+  </form>
+
+  <!-- ======================== DOCKER COMPOSE FORM ======================== -->
+  <form action="/docker/gerar" method="POST" id="form-docker" style="display:none;">
+    <div class="form-row">
+      <div>
+        <label for="stack_docker">Stack (gera Dockerfile)</label>
+        <select name="stack" id="stack_docker">
+          <option value="">Sem Dockerfile</option>
+          <option value="dotnet">.NET</option>
+          <option value="node">Node.js</option>
+          <option value="nest">NestJS</option>
+          <option value="fastapi">FastAPI</option>
+          <option value="flask">Flask</option>
+          <option value="rails">Rails</option>
+          <option value="react">React</option>
+          <option value="next">Next.js</option>
+          <option value="vue">Vue.js</option>
+          <option value="nuxt">Nuxt</option>
+          <option value="angular">Angular</option>
+        </select>
+      </div>
+      <div>
+        <label for="nome_docker">Nome do projeto</label>
+        <input type="text" name="nome" id="nome_docker" value="app" placeholder="app">
+      </div>
+    </div>
+
+    <label for="services_docker">Servicos * (separados por virgula)</label>
+    <textarea name="services" id="services_docker" placeholder="api,postgres,redis,nginx" style="min-height: 80px; font-family: var(--mono); font-size: 0.82rem;" required></textarea>
+    <p style="color: var(--text-muted); font-size: 0.8rem; margin-top: -8px;">
+      Disponiveis: api, web, postgres, mysql, mongo, redis, rabbitmq, nginx, worker, adminer, pgadmin, mailhog, minio, elasticsearch
+    </p>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-accent">Gerar docker-compose</button>
+      <a href="/" class="btn">Cancelar</a>
+    </div>
+  </form>
+</div>
+
+<script>
+  function switchTab(tab) {
+    var dtoBtn = document.getElementById('tab-dto');
+    var dckBtn = document.getElementById('tab-docker');
+    var dtoForm = document.getElementById('form-dto');
+    var dckForm = document.getElementById('form-docker');
+
+    if (tab === 'dto') {
+      dtoBtn.className = 'btn btn-accent';
+      dckBtn.className = 'btn';
+      dtoForm.style.display = 'block';
+      dckForm.style.display = 'none';
+    } else {
+      dckBtn.className = 'btn btn-accent';
+      dtoBtn.className = 'btn';
+      dckForm.style.display = 'block';
+      dtoForm.style.display = 'none';
+    }
+  }
+  switchTab('dto');
+</script>

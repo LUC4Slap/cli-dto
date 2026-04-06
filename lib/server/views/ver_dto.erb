@@ -1,0 +1,136 @@
+<div class="container">
+  <div class="page-header">
+    <div>
+      <h1><%= e(@dto[:nome]) %></h1>
+      <p><%= e(@dto[:lang]) %> / <%= e(@dto[:tipo]) %></p>
+    </div>
+    <a href="/dto/novo" class="btn">+ Novo DTO</a>
+  </div>
+
+  <div class="meta-grid">
+    <div class="meta-tag"><strong>Nome</strong><%= e(@dto[:nome]) %></div>
+    <div class="meta-tag"><strong>Linguagem</strong><%= e(@dto[:lang]) %></div>
+    <div class="meta-tag"><strong>Tipo</strong><%= e(@dto[:tipo]) %></div>
+    <div class="meta-tag"><strong>Criado em</strong><%= e(@dto[:criado_em] || '') %></div>
+  </div>
+
+  <% if @dto[:json_payload] && !@dto[:json_payload].empty? %>
+    <div class="code-preview" style="margin-bottom: 24px;">
+      <div class="code-preview-header">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+        <span class="title">input.json</span>
+        <button class="copy-btn" data-copy-target="json">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+        </button>
+      </div>
+      <pre><%= e(@dto[:json_payload]) %></pre>
+    </div>
+  <% end %>
+
+  <div class="code-preview" style="margin-top: 16px;">
+    <div class="code-preview-header">
+      <span class="dot red"></span>
+      <span class="dot yellow"></span>
+      <span class="dot green"></span>
+      <span class="title"><%= case @dto[:lang]
+            when 'ts' then 'output.ts'
+            when 'cs' then 'output.cs'
+            when 'py' then 'output.py'
+            when 'go' then 'output.go'
+            when 'java' then 'output.java'
+            when 'kotlin' then 'output.kt'
+            when 'swift' then 'output.swift'
+            when 'rust' then 'output.rs'
+            when 'docker-compose' then 'docker-compose.yml'
+            else 'output.txt'
+            end %>
+      </span>
+      <button class="copy-btn" data-copy-target="code">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+      </button>
+    </div>
+    <pre><%= (@dto[:codigo] && !@dto[:codigo].empty?) ? e(@dto[:codigo].strip) : 'Nenhum codigo gerado.' %></pre>
+  </div>
+</div>
+
+<script>
+(function() {
+  var btns = document.querySelectorAll('.copy-btn');
+  for (var i = 0; i < btns.length; i++) {
+    btns[i].addEventListener('mouseenter', function() { showTooltip(this, 'Copiar para a area de transferencia'); });
+    btns[i].addEventListener('mouseleave', function() { hideTooltip(this); });
+    btns[i].addEventListener('click', function() { doCopy(this); });
+  }
+
+  function showTooltip(btn, text) {
+    var tip = btn.querySelector('.copy-tooltip');
+    if (tip) { tip.textContent = text; return; }
+    tip = document.createElement('span');
+    tip.className = 'copy-tooltip';
+    tip.textContent = text;
+    btn.style.position = 'relative';
+    btn.appendChild(tip);
+  }
+
+  function hideTooltip(btn) {
+    setTimeout(function() {
+      var tip = btn.querySelector('.copy-tooltip');
+      if (tip && btn.getAttribute('data-state') !== 'copied') btn.removeChild(tip);
+    }, 200);
+  }
+
+  function hideTooltipNow(btn) {
+    var tip = btn.querySelector('.copy-tooltip');
+    if (tip) btn.removeChild(tip);
+  }
+
+  function doCopy(btn) {
+    var container = btn.closest('.code-preview');
+    var pre = container.querySelector('pre');
+    var text = pre.textContent;
+    var fallback = function() {
+      var ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.left = '-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); onCopied(btn); } catch(e) { onError(btn); }
+      document.body.removeChild(ta);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function() { onCopied(btn); }).catch(fallback);
+    } else {
+      fallback();
+    }
+  }
+
+  function onCopied(btn) {
+    hideTooltipNow(btn);
+    btn.classList.add('copied');
+    btn.setAttribute('data-state', 'copied');
+    showTooltip(btn, 'Copiado!');
+    var tip = btn.querySelector('.copy-tooltip');
+    if (tip) tip.classList.add('copied');
+    setTimeout(function() {
+      btn.classList.remove('copied');
+      btn.removeAttribute('data-state');
+      hideTooltipNow(btn);
+    }, 1500);
+  }
+
+  function onError(btn) {
+    hideTooltipNow(btn);
+    showTooltip(btn, 'Erro ao copiar');
+    setTimeout(function() { hideTooltipNow(btn); }, 1500);
+  }
+})();
+</script>

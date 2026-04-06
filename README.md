@@ -16,6 +16,7 @@ Ferramenta de linha de comando em **Ruby** para gerar DTOs a partir de JSON/SQL 
   - [color](#-cores)
   - [historico](#-historico-de-comandos)
   - [version](#-versao)
+  - [Servidor API + Dashboard](#-servidor-api--dashboard)
 - [Tecnologias suportadas](#tecnologias-suportadas)
 - [Estrutura do projeto](#estrutura-do-projeto)
 - [Roadmap](#roadmap)
@@ -396,6 +397,55 @@ Exibe a versão instalada do CLI.
 ```bash
 dto-cli-dev version
 ```
+
+---
+
+### `servidor` — API + Dashboard
+
+Inicia um servidor Sinatra com API REST e dashboard web para gerenciar DTOs salvos, gerar codigo via navegador e usar em pipelines CI/CD.
+
+**Iniciar o servidor:**
+
+```bash
+ruby -I lib lib/server/app.rb
+# ou
+PORT=3000 ruby -I lib lib/server/app.rb
+```
+
+**Acesso**: http://localhost:4567
+
+#### Endpoints da API REST
+
+| Metodo | Endpoint | Descrição |
+|--------|----------|-----------|
+| `POST` | `/api/dto` | Gera DTO a partir de JSON |
+| `POST` | `/api/crud` | Gera Controller/Service/Repository |
+| `POST` | `/api/docker` | Gera Dockerfile/docker-compose |
+| `POST` | `/api/dtos` | Salva um DTO manualmente |
+| `GET`  | `/api/dtos` | Lista todos os DTOs salvos |
+| `GET`  | `/api/dtos/:id` | Busca um DTO pelo ID |
+| `DELETE` | `/api/dtos/:id` | Deleta um DTO |
+
+**Exemplo de uso em CI/CD:**
+
+```bash
+# Gerar DTO via API
+curl -X POST http://localhost:4567/api/dto \
+  -H "Content-Type: application/json" \
+  -d '{"json":{"id":1,"name":"test"},"lang":"ts","nome":"User","nome_salvo":"UserDTO"}'
+
+# Gerar codigo e salvar
+{
+  "codigo": "export interface User {\n  id: number;\n  name: string;\n}"
+}
+```
+
+**Dashboard Web:**
+
+- `/` - Lista de DTOs salvos com preview
+- `/dto/novo` - Criar novo DTO a partir de JSON
+- `/dto/:id` - Ver codigo gerado com syntax highlighting
+- Suporta todas as 8 linguagens + docker-compose
 
 ---
 

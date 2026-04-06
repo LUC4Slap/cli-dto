@@ -8,3 +8,4 @@ gem "tty-prompt"
 gem "byebug"
 gem "colorize"
 gem 'sqlite3', '~> 2.9', '>= 2.9.2'
+gem "sinatra"

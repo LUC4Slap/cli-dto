@@ -3,12 +3,13 @@ require "colorize"
 require_relative '../error/cli_error'
 
 class DockerGenerator
-  def initialize(path: ".", stack: nil, services: [], name: "app", output: "docker-compose.yml")
+  def initialize(path: ".", stack: nil, services: [], name: "app", output: "docker-compose.yml", return_only: false)
     @path = path
     @stack = stack
     @services = services.map(&:strip).map(&:downcase)
     @name = name
     @output = output
+    @return_only = return_only
   end
 
   def generate_dockerfile
@@ -23,7 +24,7 @@ class DockerGenerator
               else raise CliError, "Stack nao suportada para Dockerfile: #{@stack}"
               end
 
-    File.write("#{@path}/Dockerfile", content)
+    write_file("#{@path}/Dockerfile", content)
 
     output = ""
     output << "Dockerfile gerado em #{@path}/Dockerfile\n".green
@@ -34,6 +35,41 @@ class DockerGenerator
   def generate_compose
     raise CliError, "Informe pelo menos um servico. Ex: --services api,database,redis" if @services.empty?
 
+    compose_content = build_compose_content
+
+    write_file("#{@path}/#{@output}", compose_content)
+
+    output = ""
+    output << "docker-compose.yml gerado em #{@path}/#{@output}\n".green
+    output << "Servicos: #{@services.join(', ')}".green
+    output
+  end
+
+  def dockerfile_content
+    case @stack
+    when "dotnet" then dockerfile_dotnet
+    when "node", "nest" then dockerfile_node
+    when "fastapi", "flask" then dockerfile_python
+    when "rails" then dockerfile_rails
+    when "react", "next", "vue", "nuxt", "angular" then dockerfile_frontend
+    else raise CliError, "Stack nao suportada para Dockerfile: #{@stack}"
+    end
+  end
+
+  def compose_content
+    build_compose_content
+  end
+
+  def generate_both
+    out = ""
+    out << generate_dockerfile << "\n\n" if @stack
+    out << generate_compose unless @services.empty?
+    out
+  end
+
+  private
+
+  def build_compose_content
     content = +""
     content << "version: '3.8'\n\n"
     content << "services:\n"
@@ -72,22 +108,14 @@ class DockerGenerator
       end
     end
 
-    File.write("#{@path}/#{@output}", content)
-
-    output = ""
-    output << "docker-compose.yml gerado em #{@path}/#{@output}\n".green
-    output << "Servicos: #{@services.join(', ')}".green
-    output
+    content
   end
 
-  def generate_both
-    out = ""
-    out << generate_dockerfile << "\n\n" if @stack
-    out << generate_compose unless @services.empty?
-    out
+  def write_file(path, content)
+    return if @return_only
+    FileUtils.mkdir_p(File.dirname(path)) unless File.directory?(File.dirname(path))
+    File.write(path, content)
   end
-
-  private
 
   # ============================================
   # Dockerfiles

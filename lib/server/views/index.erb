@@ -1,0 +1,172 @@
+<div class="container">
+  <div class="page-header">
+    <div>
+      <h1>Dashboard</h1>
+      <p>Analytics baseados no historico de comandos</p>
+    </div>
+    <form action="/dto/novo" method="POST">
+    </form>
+    <a href="/dto/novo" class="btn btn-accent">+ Novo DTO</a>
+  </div>
+
+  <% if @stats && @stats[:total] > 0 %>
+    <div class="stats-overview">
+      <div class="stat-card">
+        <div class="stat-label">Total de Comandos</div>
+        <div class="stat-value"><%= @stats[:total] %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Comandos Diferentes</div>
+        <div class="stat-value"><%= @stats[:cmd_chart].size %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Linguagens Usadas</div>
+        <div class="stat-value"><%= @stats[:lang_chart].size %></div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Ultimo Comando</div>
+        <div class="stat-value" style="font-size: 0.9rem; font-weight: 500; color: var(--text-secondary);"><%= @stats[:recentes].first[:nome] rescue '-' %></div>
+      </div>
+    </div>
+
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3>Comandos Mais Usados</h3>
+        <% if @stats[:cmd_chart].length == 1 %>
+          <% item = @stats[:cmd_chart][0] %>
+          <div class="pie-chart-container">
+            <svg viewBox="0 0 200 200" width="180" height="180">
+              <circle cx="100" cy="100" r="80" fill="#8b5cf6" opacity="0.8"/>
+              <circle cx="100" cy="100" r="50" fill="#18181b"/>
+            </svg>
+            <div class="pie-legend">
+              <div class="pie-legend-item">
+                <span class="pie-legend-color" style="background: #8b5cf6;"></span>
+                <span class="pie-label"><%= e(item[:nome]) %> <strong><%= item[:total] %></strong></span>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="pie-chart-container">
+            <svg viewBox="0 0 200 200" width="180" height="180">
+              <% cumulative = 0 %>
+              <% pie_colors = ['#8b5cf6', '#22c55e', '#3b82f6', '#f59e0b', '#f43f5e', '#06b6d4'] %>
+              <% @stats[:cmd_chart].each_with_index do |item, i| %>
+                <% pct = item[:total].to_f / @stats[:total] %>
+                <% start_angle = cumulative * 2 * Math::PI %>
+                <% end_angle = (cumulative + pct) * 2 * Math::PI %>
+                <% x1 = 100 + 80 * Math.cos(start_angle - Math::PI / 2) %>
+                <% y1 = 100 + 80 * Math.sin(start_angle - Math::PI / 2) %>
+                <% x2 = 100 + 80 * Math.cos(end_angle - Math::PI / 2) %>
+                <% y2 = 100 + 80 * Math.sin(end_angle - Math::PI / 2) %>
+                <% large_arc = pct > 0.5 ? 1 : 0 %>
+                <% d = "M 100 100 L #{x1} #{y1} A 80 80 0 #{large_arc} 1 #{x2} #{y2} Z" %>
+                <path d="<%= d %>" fill="<%= pie_colors[i % pie_colors.size] %>" opacity="0.85"/>
+                <% cumulative += pct %>
+              <% end %>
+              <circle cx="100" cy="100" r="45" fill="#18181b"/>
+            </svg>
+            <div class="pie-legend">
+              <% @stats[:cmd_chart].each_with_index do |item, i| %>
+                <div class="pie-legend-item">
+                  <span class="pie-legend-color" style="background: <%= pie_colors[i % pie_colors.size] %>;"></span>
+                  <span class="pie-label"><%= e(item[:nome]) %> <strong><%= item[:pct] %>%</strong></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="chart-card">
+        <h3>Linguagens Mais Usadas</h3>
+        <% if @stats[:lang_chart].empty? %>
+          <p style="color: var(--text-muted); font-size: 0.85rem; text-align: center; padding: 20px 0;">Nenhuma linguagem usada ainda</p>
+        <% elsif @stats[:lang_chart].length == 1 %>
+          <% item = @stats[:lang_chart][0] %>
+          <div class="pie-chart-container">
+            <svg viewBox="0 0 200 200" width="180" height="180">
+              <circle cx="100" cy="100" r="80" fill="#22c55e" opacity="0.8"/>
+              <circle cx="100" cy="100" r="50" fill="#18181b"/>
+            </svg>
+            <div class="pie-legend">
+              <div class="pie-legend-item">
+                <span class="pie-legend-color" style="background: #22c55e;"></span>
+                <span class="pie-label"><%= e(item[:nome]) %> <strong><%= item[:total] %></strong></span>
+              </div>
+            </div>
+          </div>
+        <% else %>
+          <div class="pie-chart-container">
+            <svg viewBox="0 0 200 200" width="180" height="180">
+              <% cumulative2 = 0 %>
+              <% pie_colors2 = ['#8b5cf6', '#22c55e', '#3b82f6', '#f59e0b', '#f43f5e', '#06b6d4'] %>
+              <% @stats[:lang_chart].each_with_index do |item, i| %>
+                <% pct2 = item[:total].to_f / @stats[:lang_chart].sum { |l| l[:total] } %>
+                <% start_a = cumulative2 * 2 * Math::PI %>
+                <% end_a = (cumulative2 + pct2) * 2 * Math::PI %>
+                <% x1b = 100 + 80 * Math.cos(start_a - Math::PI / 2) %>
+                <% y1b = 100 + 80 * Math.sin(start_a - Math::PI / 2) %>
+                <% x2b = 100 + 80 * Math.cos(end_a - Math::PI / 2) %>
+                <% y2b = 100 + 80 * Math.sin(end_a - Math::PI / 2) %>
+                <% large_arcb = pct2 > 0.5 ? 1 : 0 %>
+                <% d2 = "M 100 100 L #{x1b} #{y1b} A 80 80 0 #{large_arcb} 1 #{x2b} #{y2b} Z" %>
+                <path d="<%= d2 %>" fill="<%= pie_colors2[i % pie_colors2.size] %>" opacity="0.85"/>
+                <% cumulative2 += pct2 %>
+              <% end %>
+              <circle cx="100" cy="100" r="45" fill="#18181b"/>
+            </svg>
+            <div class="pie-legend">
+              <% @stats[:lang_chart].each_with_index do |item, i| %>
+                <div class="pie-legend-item">
+                  <span class="pie-legend-color" style="background: <%= pie_colors2[i % pie_colors2.size] %>;"></span>
+                  <span class="pie-label"><%= e(item[:nome]) %> <strong><%= item[:pct] %>%</strong></span>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="chart-card" style="grid-column: 1 / -1;">
+        <h3>Parametros Mais Utilizados</h3>
+        <% if @stats[:params_chart].empty? %>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Nenhum parametro extra usado ainda</p>
+        <% else %>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px;">
+            <% colors = ['', 'green', 'blue', 'amber', 'rose', 'cyan'] %>
+            <% @stats[:params_chart].each_with_index do |item, i| %>
+              <div class="chart-bar">
+                <div class="chart-bar-header">
+                  <span class="chart-bar-label" style="font-family: var(--mono); font-size: 0.78rem;"><%= e(item[:nome]) %></span>
+                  <span class="chart-bar-value"><%= item[:total] %>x</span>
+                </div>
+                <div class="chart-bar-track">
+                  <div class="chart-bar-fill <%= colors[i % colors.size] %>" style="width: <%= item[:pct] %>%;"></div>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="section-title">Historico de Comandos Recentes</div>
+    <div class="dto-list">
+      <% @stats[:recentes].each do |cmd| %>
+        <div class="dto-item">
+          <div class="dto-info">
+            <span class="dto-lang-badge"><%= e(cmd[:nome]) %></span>
+            <span class="dto-time" style="color: var(--text-secondary);"><%= e(cmd[:criado_em] || '') %></span>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <div class="empty-state">
+      <h3>Nenhum comando registrado</h3>
+      <p>Use a CLI para que os comandos comecem aparecer aqui</p>
+      <a href="/dto/novo" class="btn btn-accent">Gerar primeiro DTO</a>
+    </div>
+  <% end %>
+</div>
