@@ -148,11 +148,16 @@ export class Historico {
 
 **Linguagens suportadas para geração de DTO:**
 
-| Flag `--lang` | Linguagem    |
-| ------------- | ------------ |
-| `ts`          | TypeScript   |
-| `cs`          | C#           |
-| `py`          | Python       |
+| Flag `--lang`  | Linguagem    | Observação                    |
+| -------------- | ------------ | ----------------------------- |
+| `ts`           | TypeScript   | `interface` ou `class`        |
+| `cs`           | C#           |                               |
+| `py`           | Python       | Pydantic `BaseModel`          |
+| `go`           | Go           | Structs + JSON tags           |
+| `java`         | Java         | Classes com getters/setters   |
+| `kotlin`       | Kotlin       | Data classes                  |
+| `swift`        | Swift        | Structs `Codable`             |
+| `rust`         | Rust         | Structs `Serialize/Deserialize` |
 
 ---
 
@@ -403,8 +408,8 @@ cli-dto/
 
 - [ ] Templates avançados por stack
 - [x] Geração de código (controllers, services, etc.)
+- [x] Gerar DTO para outras linguagens (Go, Java, Rust, Kotlin, Swift)
 - [ ] Suporte a Docker / Docker Compose
-- [ ] Gerar DTO para outras linguagens (Go, Java, Rust, etc.)
 - [ ] Validação de schemas gerados
 - [ ] Testes automatizados
 
