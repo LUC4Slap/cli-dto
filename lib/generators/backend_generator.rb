@@ -1,15 +1,17 @@
 # frozen_string_literal: true
 # frozen_string_literal: true
 require_relative "../utils/env_generator"
+require_relative "docker_generator"
 require "fileutils"
 
 class BackendGenerator
-  def initialize(stack, nome, path, clean: false, rabbitmq: false)
+  def initialize(stack, nome, path, clean: false, rabbitmq: false, docker: false)
     @stack = stack
     @nome = nome
     @path = path
     @clean = clean
     @rabbitmq = rabbitmq
+    @docker = docker
   end
 
   def generate
@@ -36,6 +38,10 @@ class BackendGenerator
 
     else
       puts "Stack não suportada"
+    end
+
+    if @docker
+      generate_docker_files(full_path)
     end
 
     puts "✅ Projeto criado em #{full_path}"
@@ -266,5 +272,33 @@ class BackendGenerator
       def home():
           return {"status": "ok"}
     PY
+  end
+
+  # =========================
+  # 🐳 DOCKER
+  # =========================
+
+  def generate_docker_files(base)
+    docker_map = {
+      "dotnet" => "dotnet",
+      "node" => "node",
+      "nest" => "nest",
+      "fastapi" => "fastapi",
+      "flask" => "flask",
+      "rails" => "rails"
+    }
+
+    stack = docker_map[@stack]
+    return puts "  Stack #{@stack} nao tem Dockerfile automatico (por enquanto)" unless stack
+
+    generator = DockerGenerator.new(
+      path: base,
+      stack: stack,
+      services: %w[api postgres],
+      name: @nome,
+      output: "docker-compose.yml"
+    )
+    generator.generate_both
+    puts "  Dockerfile e docker-compose.yml criados"
   end
 end

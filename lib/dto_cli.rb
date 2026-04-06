@@ -8,6 +8,7 @@ require 'colorized_string'
 require_relative 'cores/cores'
 require_relative 'db/data_base'
 require_relative 'generators/controller_generator'
+require_relative 'generators/docker_generator'
 
 class DtoCLI < Thor
   def self.exit_on_failure?
@@ -68,6 +69,7 @@ class DtoCLI < Thor
   option :path, type: :string, default: Dir.pwd
   option :clean, type: :boolean, default: false
   option :rabbitmq, type: :boolean, default: false
+  option :docker, type: :boolean, default: false
 
   def init(tipo = nil, stack = nil, nome = nil)
     prompt = TTY::Prompt.new
@@ -100,7 +102,8 @@ class DtoCLI < Thor
         nome,
         path,
         clean: options[:clean],
-        rabbitmq: options[:rabbitmq]
+        rabbitmq: options[:rabbitmq],
+        docker: options[:docker]
       ).generate
     end
   end
@@ -160,5 +163,42 @@ class DtoCLI < Thor
     generator = ControllerGenerator.new(json, lang: options[:lang], path: options[:path])
     @banco.salvar_comando("gerar_crud", options.to_s)
     puts generator.generate.send(color)
+  end
+
+  desc "docker [TIPO]", "Gera Dockerfile e/ou docker-compose.yml automaticamente"
+  option :stack, type: :string, required: false
+  option :services, type: :string, required: false
+  option :path, type: :string, default: Dir.pwd
+  option :name, type: :string, default: "app"
+  option :output, type: :string, default: "docker-compose.yml"
+  option :dockerfile_only, type: :boolean, default: false
+  option :compose_only, type: :boolean, default: false
+  option :color, type: :string, default: "green", required: false
+
+  def docker(tipo = nil)
+    cores_permitidas = ColorizedString.colors
+    color = (options[:color] || "green").to_sym
+    color = cores_permitidas.include?(color) ? color : "green"
+
+    services = options[:services] ? options[:services].split(",") : []
+
+    generator = DockerGenerator.new(
+      path: options[:path],
+      stack: options[:stack],
+      services: services,
+      name: options[:name],
+      output: options[:output]
+    )
+
+    result = if options[:dockerfile_only]
+      generator.generate_dockerfile
+    elsif options[:compose_only]
+      generator.generate_compose
+    else
+      generator.generate_both
+    end
+
+    @banco.salvar_comando("docker", options.to_s)
+    puts result.send(color)
   end
 end

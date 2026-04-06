@@ -10,6 +10,7 @@ Ferramenta de linha de comando em **Ruby** para gerar DTOs a partir de JSON/SQL 
 - [Comandos disponíveis](#comandos-disponiveis)
   - [gerar](#-gerar-dto)
   - [gerar_crud](#-gerar-crud---controller--service--repository)
+  - [docker](#docker---dockerfile-e-docker-compose)
   - [init](#-inicializar-projeto)
   - [init microservice](#-arquitetura-de-microservicos)
   - [color](#-cores)
@@ -218,6 +219,58 @@ Total: 2 controllers, 2 services, 2 repositories gerados com sucesso!
 
 ---
 
+### `docker` — Dockerfile e Docker Compose
+
+Gera Dockerfiles e docker-compose.yml automaticamente para sua stack.
+
+```bash
+# Gerar Dockerfile + docker-compose
+dto-cli-dev docker --stack dotnet --services api,postgres,redis
+
+# Somente Dockerfile
+dto-cli-dev docker --stack fastapi --dockerfile-only
+
+# Somente docker-compose
+dto-cli-dev docker --services api,postgres,redis,pgadmin --compose-only
+
+# Nome customizado e output diferente
+dto-cli-dev docker --stack node --services api,mongo --name minha-api --output docker-compose.dev.yml
+```
+
+**Opções:**
+
+| Flag                | Padrão            | Descrição                                              |
+| ------------------- | ----------------- | ------------------------------------------------------ |
+| `--stack`           | —                 | Stack para Dockerfile: `dotnet`, `node`, `nest`, `fastapi`, `flask`, `rails`, `react`, `next`, `vue`, `nuxt`, `angular` |
+| `--services`        | —                 | Lista separada por virgulas: `api`, `web`, `postgres`, `mysql`, `mongo`, `redis`, `rabbitmq`, `nginx`, `worker`, `adminer`, `pgadmin`, `mailhog`, `minio`, `elasticsearch` |
+| `--path`            | `Dir.pwd`         | Diretorio de saida                                     |
+| `--name`            | `app`             | Nome do projeto (usado em env vars e DB names)         |
+| `--output`          | `docker-compose.yml` | Nome do arquivo de saida                            |
+| `--dockerfile-only` | `false`           | Gera apenas o Dockerfile                               |
+| `--compose-only`    | `false`           | Gera apenas o docker-compose.yml                       |
+| `--color`           | `green`           | Cor do output no terminal                              |
+
+**Serviços disponíveis para docker-compose:**
+
+| Servico | Descrição |
+|---------|-----------|
+| `api` / `app` | API com build local + Postgres |
+| `web` | Frontend web |
+| `postgres` | PostgreSQL 16 Alpine |
+| `mysql` | MySQL 8 |
+| `mongo` | MongoDB 7 |
+| `redis` | Redis 7 Alpine |
+| `rabbitmq` | RabbitMQ 3 com management |
+| `nginx` | Reverse proxy |
+| `worker` | Worker Sidekiq |
+| `adminer` | Adminer (DB admin) |
+| `pgadmin` | pgAdmin 4 |
+| `mailhog` | MailHog (email testing) |
+| `minio` | MinIO (S3-compatible) |
+| `elasticsearch` | Elasticsearch 8 |
+
+---
+
 ### `init` — Inicializar projeto
 
 Cria um projeto frontend ou backend com scaffolding automático.
@@ -243,6 +296,7 @@ Se omitidos, `TIPO`, `STACK` e `NOME` são solicitados interativamente.
 | `--path`     | `Dir.pwd`| Caminho onde o projeto será criado                     |
 | `--clean`    | `false`   | Gera estrutura Clean Architecture com microservicos    |
 | `--rabbitmq` | `false`   | Adiciona suporte a mensageria RabbitMQ                 |
+| `--docker`   | `false`   | Gera Dockerfile e docker-compose.yml automaticamente   |
 
 **Exemplos:**
 
@@ -384,9 +438,15 @@ cli-dto/
 │   │   ├── frontend_generator.rb   # Scaffold de projetos frontend
 │   │   ├── microservice_generator.rb # Estrutura de microservicos
 │   │   ├── controller_generator.rb # Gera Controller, Service e Repository
+│   │   ├── docker_generator.rb     # Gera Dockerfile e docker-compose.yml
 │   │   ├── typescript_generator.rb # Gerador DTO TypeScript
 │   │   ├── csharp_generator.rb     # Gerador DTO C#
-│   │   └── python_generator.rb     # Gerador DTO Python
+│   │   ├── python_generator.rb     # Gerador DTO Python
+│   │   ├── go_generator.rb         # Gerador DTO Go
+│   │   ├── java_generator.rb       # Gerador DTO Java
+│   │   ├── kotlin_generator.rb     # Gerador DTO Kotlin
+│   │   ├── swift_generator.rb      # Gerador DTO Swift
+│   │   └── rust_generator.rb       # Gerador DTO Rust
 │   ├── parsers/
 │   │   └── json_parser.rb          # Parser e inferência de tipos
 │   ├── db/
@@ -409,7 +469,7 @@ cli-dto/
 - [ ] Templates avançados por stack
 - [x] Geração de código (controllers, services, etc.)
 - [x] Gerar DTO para outras linguagens (Go, Java, Rust, Kotlin, Swift)
-- [ ] Suporte a Docker / Docker Compose
+- [x] Suporte a Docker / Docker Compose
 - [ ] Validação de schemas gerados
 - [ ] Testes automatizados
 
