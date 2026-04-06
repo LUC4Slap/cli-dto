@@ -9,6 +9,7 @@ Ferramenta de linha de comando em **Ruby** para gerar DTOs a partir de JSON/SQL 
 - [Instalação](#instalacao)
 - [Comandos disponíveis](#comandos-disponiveis)
   - [gerar](#-gerar-dto)
+  - [gerar_crud](#-gerar-crud---controller--service--repository)
   - [init](#-inicializar-projeto)
   - [init microservice](#-arquitetura-de-microservicos)
   - [color](#-cores)
@@ -152,6 +153,63 @@ export class Historico {
 | `ts`          | TypeScript   |
 | `cs`          | C#           |
 | `py`          | Python       |
+
+---
+
+### `gerar_crud` — Controller, Service & Repository
+
+Gera Controllers, Services e Repositories a partir de um JSON/DTO automaticamente. Cada entidade detectada gera 3 arquivos com endpoints REST completos (GET, GET/:id, POST, PUT, DELETE).
+
+```bash
+dto-cli-dev gerar_crud --input <ARQUIVO>.json --lang <LINGUAGEM> [opcoes]
+dto-cli-dev gerar_crud --url <URL> --lang <LINGUAGEM> [opcoes]
+```
+
+**Opções:**
+
+| Flag              | Padrão       | Descrição                                                            |
+| ----------------- | ------------ | -------------------------------------------------------------------- |
+| `--url`           | —            | URL do JSON para gerar o CRUD                                        |
+| `--input`         | —            | Caminho para arquivo JSON local                                      |
+| `--lang` **(req)**| —            | Linguagem: `dotnet`, `node`, `python`, `typescript`                  |
+| `--path`          | `Dir.pwd`    | Diretorio de saida dos arquivos                                      |
+| `--color`         | `green`      | Cor do output no terminal                                            |
+
+**Exemplo:**
+
+```bash
+dto-cli-dev gerar_crud \
+  --input user.json \
+  --lang dotnet \
+  --path ./src
+```
+
+**Saída:**
+
+```
+Controllers gerados:
+  - UserController.cs
+  - AddressController.cs
+
+Services gerados:
+  - UserService.cs
+  - AddressService.cs
+
+Repositories gerados:
+  - UserRepository.cs
+  - AddressRepository.cs
+
+Total: 2 controllers, 2 services, 2 repositories gerados com sucesso!
+```
+
+**Linguagens suportadas para geração de CRUD:**
+
+| Flag `--lang`      | Linguagem        | Estilo                           |
+| ------------------ | ---------------- | -------------------------------- |
+| `dotnet`/`cs`      | C# / .NET        | `[ApiController]`, interfaces   |
+| `node`/`js`        | Node.js          | Express + `module.exports`       |
+| `python`/`py`      | Python           | FastAPI + routers                |
+| `typescript`/`ts`  | TypeScript       | Express com types                |
 
 ---
 
@@ -320,6 +378,7 @@ cli-dto/
 │   │   ├── backend_generator.rb    # Scaffold de projetos backend
 │   │   ├── frontend_generator.rb   # Scaffold de projetos frontend
 │   │   ├── microservice_generator.rb # Estrutura de microservicos
+│   │   ├── controller_generator.rb # Gera Controller, Service e Repository
 │   │   ├── typescript_generator.rb # Gerador DTO TypeScript
 │   │   ├── csharp_generator.rb     # Gerador DTO C#
 │   │   └── python_generator.rb     # Gerador DTO Python
@@ -343,7 +402,7 @@ cli-dto/
 ## Roadmap
 
 - [ ] Templates avançados por stack
-- [ ] Geração de código (controllers, services, etc.)
+- [x] Geração de código (controllers, services, etc.)
 - [ ] Suporte a Docker / Docker Compose
 - [ ] Gerar DTO para outras linguagens (Go, Java, Rust, etc.)
 - [ ] Validação de schemas gerados

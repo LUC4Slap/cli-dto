@@ -44,12 +44,13 @@
         Open Source &bull; v0.1.0
       </div>
       <h1>
-        Gere DTOs e Scaffolds<br>
-        <span class="text-gradient">em Segundos</span>
+        Gere DTOs, Controllers<br>
+        e Services <span class="text-gradient">em Segundos</span>
       </h1>
       <p class="hero-description">
         Transforme JSON, URLs e schemas SQL em DTOs tipados automaticamente.
-        Scaffold projetos backend e frontend com um comando.
+        Gere Controllers, Services e Repositories completos com um comando.
+        Scaffold projetos backend e frontend.
         <strong>Ruby, CLI, sem burocracia.</strong>
       </p>
       <div class="hero-actions">
@@ -108,6 +109,7 @@
         <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/dotnetcore/dotnetcore-original.svg" alt="C#"> C#</span>
         <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original.svg" alt="Python"> Python</span>
         <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nodejs/nodejs-original.svg" alt="Node.js"> Node.js</span>
+        <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" alt="FastAPI"> FastAPI</span>
         <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="React"> React</span>
         <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" alt="Next.js"> Next.js</span>
       </div>
@@ -138,6 +140,13 @@
           </div>
           <h3>SQL to DTO</h3>
           <p>Aponte para um schema SQL e gere DTOs automaticamente. Ideal para quem migra de sistemas legacy.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <h3>Geracao de CRUD</h3>
+          <p>De JSON a Controllers, Services e Repositories completos com endpoints REST (GET, POST, PUT, DELETE). Suporta .NET, Node, Python e TypeScript.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">
@@ -176,7 +185,7 @@
     <div class="container">
       <div class="section-header">
         <span class="section-label">Como Funciona</span>
-        <h2>Dois comandos.<br>Produtividade infinita.</h2>
+        <h2>Tres comandos.<br>Projeto completo.</h2>
       </div>
       <div class="steps">
         <div class="step">
@@ -191,9 +200,9 @@
         </div>
         <div class="step">
           <div class="step-number">2</div>
-          <h3>Gere um DTO</h3>
+          <h3>Gere DTOs + CRUD</h3>
           <div class="code-block">
-            <code>dto-cli-dev gerar --url https://api.exemplo.com/dados --lang ts</code>
+            <code>dto-cli-dev gerar_crud --input user.json --lang dotnet --path ./src</code>
           </div>
         </div>
         <div class="step-arrow">
@@ -231,6 +240,8 @@
           <ul class="pricing-features">
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Gerador de DTO a partir de JSON</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> TypeScript, C# e Python</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Geracao de Controllers, Services e Repositories</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> .NET, Node.js, FastAPI e TypeScript</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Scaffold de projetos frontend/backend</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Output colorido no terminal</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Historico de comandos (SQLite local)</li>
@@ -254,7 +265,6 @@
           <ul class="pricing-features">
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> <strong>Tudo do Community</strong> e mais:</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> DTO a partir de SQL Schema</li>
-            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Geracao de Controllers e Services</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Templates personalizados</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Geracao de Docker e Docker Compose</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Historico na nuvem (sync entre maquinas)</li>

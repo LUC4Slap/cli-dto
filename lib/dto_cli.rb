@@ -7,6 +7,7 @@ require 'byebug'
 require 'colorized_string'
 require_relative 'cores/cores'
 require_relative 'db/data_base'
+require_relative 'generators/controller_generator'
 
 class DtoCLI < Thor
   def self.exit_on_failure?
@@ -130,5 +131,34 @@ class DtoCLI < Thor
     @banco.listar_comandos(options[:query]).map do |id, nome, comando, data|
       puts "nome: #{nome} - comando: #{comando} - criado_em: #{data}"
     end
+  end
+
+  desc "gerar_crud", "Gera Controller, Service e Repository a partir de JSON/DTO"
+  option :input, required: false
+  option :url, required: false
+  option :lang, required: true
+  option :path, type: :string, default: Dir.pwd
+  option :color, type: :string, default: "green", required: false
+
+  def gerar_crud
+    if options[:input].nil? && options[:url].nil?
+      raise CliError, "Você deve informar --input ou --url"
+    end
+
+    cores_permitidas = ColorizedString.colors
+    color = (options[:color] || "green").to_sym
+    color = cores_permitidas.include?(color) ? color : "green"
+
+    json = if options[:input]
+      JsonParser.parse(options[:input])
+    elsif options[:url]
+      require "faraday"
+      response = Faraday.get(options[:url])
+      JSON.parse(response.body)
+    end
+
+    generator = ControllerGenerator.new(json, lang: options[:lang], path: options[:path])
+    @banco.salvar_comando("gerar_crud", options.to_s)
+    puts generator.generate.send(color)
   end
 end
