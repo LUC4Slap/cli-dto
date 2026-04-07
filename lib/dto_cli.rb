@@ -214,7 +214,7 @@ class DtoCLI < Thor
 
   def youtube
     yt = YouTubers.new(options[:perfil_id], options[:color], options[:video_id], options[:key])
-
+    @banco.salvar_comando("youtube", options.to_s)
     if !options[:responder].nil?
       yt.responder_comentario(options[:responder], options[:parent_id])
     elsif options[:comentarios] || options[:video_id]
