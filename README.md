@@ -16,6 +16,7 @@ Ferramenta de linha de comando em **Ruby** para gerar DTOs a partir de JSON/SQL 
   - [color](#-cores)
   - [historico](#-historico-de-comandos)
   - [version](#-versao)
+  - [youtube](#-youtube)
   - [Servidor API + Dashboard](#-servidor-api--dashboard)
 - [Tecnologias suportadas](#tecnologias-suportadas)
 - [Estrutura do projeto](#estrutura-do-projeto)
@@ -396,6 +397,47 @@ Exibe a versão instalada do CLI.
 
 ```bash
 dto-cli-dev version
+```
+
+---
+
+### `youtube` — YouTube
+
+Interage com a API do YouTube: listar vídeos de um canal, ver comentários e responder comentários.
+
+```bash
+# Listar vídeos de um canal
+dto-cli-dev youtube --key <API_KEY> --perfil-id <CHANNEL_ID>
+
+# Ver comentários de um vídeo
+dto-cli-dev youtube --key <API_KEY> --video-id <VIDEO_ID> --comentarios
+
+# Responder um comentário
+dto-cli-dev youtube --key <API_KEY> --video-id <VIDEO_ID> --responder "Texto da resposta" --parent-id <COMMENT_ID>
+```
+
+**Opções:**
+
+| Flag           | Padrão     | Descrição                                              |
+| -------------- | ---------- | ------------------------------------------------------ |
+| `--key`        | —          | **Obrigatório** — API Key do Google/YouTube V3         |
+| `--perfil_id`  | —          | ID do canal do YouTube (ex: `UCxxxxxxxxxxxx`)           |
+| `--video_id`   | —          | ID de um vídeo do YouTube                              |
+| `--comentarios`| `false`    | Trazer comentários de um vídeo (requer `--video-id`)   |
+| `--responder`  | —          | Texto da resposta a um comentário                      |
+| `--parent_id`  | —          | ID do comentário pai (sem isso, responde o primeiro)    |
+| `--color`      | `green`    | Cor do output no terminal                              |
+
+**Exemplos:**
+```bash
+# Listar vídeos do canal
+dto-cli-dev youtube --key AIza... --perfil-id UCbqlAtEV9p_Mmpp_dHZ285Q --color cyan
+
+# Ver todos os comentários de um vídeo
+dto-cli-dev youtube --key AIza... --video-id vs7NHIYAefQ --comentarios
+
+# Responder ao primeiro comentário de um vídeo
+dto-cli-dev youtube --key AIza... --video-id vs7NHIYAefQ --responder "Ótimo vídeo!"
 ```
 
 ---

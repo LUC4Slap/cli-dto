@@ -9,6 +9,7 @@ require_relative 'cores/cores'
 require_relative 'db/data_base'
 require_relative 'generators/controller_generator'
 require_relative 'generators/docker_generator'
+require_relative 'youtubers/you_tubers'
 
 class DtoCLI < Thor
   def self.exit_on_failure?
@@ -200,5 +201,45 @@ class DtoCLI < Thor
 
     @banco.salvar_comando("docker", options.to_s)
     puts result.send(color)
+  end
+
+  desc "youtube", "Interage com videos do YouTube (videos, comentarios, respostas)"
+  option :key, type: :string, required: true
+  option :perfil_id, type: :string, required: false
+  option :video_id, type: :string, required: false
+  option :comentarios, type: :boolean, default: false
+  option :responder, type: :string, default: nil
+  option :parent_id, type: :string, default: nil
+  option :color, type: :string, default: "green", required: false
+
+  def youtube
+    yt = YouTubers.new(options[:perfil_id], options[:color], options[:video_id], options[:key])
+
+    if !options[:responder].nil?
+      yt.responder_comentario(options[:responder], options[:parent_id])
+    elsif options[:comentarios] || options[:video_id]
+      raise CliError, "--video-id é obrigatório para ver comentários" unless options[:video_id]
+
+      comments = yt.retornar_comentarios
+      if comments.empty?
+        puts "Nenhum comentário encontrado.".send(options[:color].to_sym)
+      else
+        comments.each_with_index do |c, i|
+          puts "#{i + 1}. #{c[:author]}: #{c[:text]}".send(options[:color].to_sym)
+        end
+      end
+    elsif options[:perfil_id]
+      videos = yt.retornar_videos
+      if videos.empty?
+        puts "Nenhum vídeo encontrado.".send(options[:color].to_sym)
+      else
+        videos.each do |v|
+          puts "#{v[:title]}".send(options[:color].to_sym)
+          puts "   ID: #{v[:video_id]} | Publicado em: #{v[:published_at]}"
+        end
+      end
+    else
+      raise CliError, "Informe --perfil-id (vídeos) ou --video-id (comentários) ou --responder (responder comentário)"
+    end
   end
 end
