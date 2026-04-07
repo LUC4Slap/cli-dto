@@ -5,10 +5,11 @@ require 'json'
 class YouTubers
   BASE_URL = 'https://www.googleapis.com/youtube/v3'
 
-  def initialize(perfil_id = nil, color = 'green', video_id = nil, key = nil)
+  def initialize(perfil_id = nil, color = 'green', video_id = nil, key = nil, obter_id_canal = nil)
     @perfil_id = perfil_id
     @video_id = video_id
     @key = key
+    @obter_id_canal = obter_id_canal
   end
 
   def retornar_videos
@@ -71,6 +72,21 @@ class YouTubers
     result.send(@color)
   rescue Faraday::Error => e
     raise "Erro ao responder comentário: #{e.message}"
+  end
+
+  def obter_id_canal
+    # debugger
+    response = conn.get('search', {
+      q: @obter_id_canal,
+      type: 'channel',
+      maxResults: 1,
+      key: @key
+    })
+    # debugger
+    result = JSON.parse(response.body)
+    return 'NOT FOUND' if result['pageInfo']['totalResults'] == 0
+    # debugger
+    result['items'] #.each { |t| puts t['id']['channelId'] }
   end
 
   private

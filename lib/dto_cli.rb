@@ -210,11 +210,16 @@ class DtoCLI < Thor
   option :comentarios, type: :boolean, default: false
   option :responder, type: :string, default: nil
   option :parent_id, type: :string, default: nil
+  option :obter_id_canal, type: :string, default: nil, required: false
   option :color, type: :string, default: "green", required: false
 
   def youtube
-    yt = YouTubers.new(options[:perfil_id], options[:color], options[:video_id], options[:key])
+    yt = YouTubers.new(options[:perfil_id], options[:color], options[:video_id], options[:key], options[:obter_id_canal])
     @banco.salvar_comando("youtube", options.to_s)
+    cor = options[:color]
+    if cor.nil?
+      cor = 'green'
+    end
     if !options[:responder].nil?
       yt.responder_comentario(options[:responder], options[:parent_id])
     elsif options[:comentarios] || options[:video_id]
@@ -222,21 +227,25 @@ class DtoCLI < Thor
 
       comments = yt.retornar_comentarios
       if comments.empty?
-        puts "Nenhum comentário encontrado.".send(options[:color].to_sym)
+        puts "Nenhum comentário encontrado.".send(cor.to_sym)
       else
         comments.each_with_index do |c, i|
-          puts "#{i + 1}. #{c[:author]}: #{c[:text]}".send(options[:color].to_sym)
+          puts "#{i + 1}. #{c[:author]}: #{c[:text]}".send(cor.to_sym)
         end
       end
     elsif options[:perfil_id]
       videos = yt.retornar_videos
       if videos.empty?
-        puts "Nenhum vídeo encontrado.".send(options[:color].to_sym)
+        puts "Nenhum vídeo encontrado.".send(cor.to_sym)
       else
         videos.each do |v|
-          puts "#{v[:title]}".send(options[:color].to_sym)
+          puts "#{v[:title]}".send(cor.to_sym)
           puts "   ID: #{v[:video_id]} | Publicado em: #{v[:published_at]}"
         end
+      end
+    elsif options[:obter_id_canal]
+      yt.obter_id_canal.map do |item|
+        puts item['id']['channelId'].send(cor.to_sym)
       end
     else
       raise CliError, "Informe --perfil-id (vídeos) ou --video-id (comentários) ou --responder (responder comentário)"
