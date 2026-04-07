@@ -229,8 +229,8 @@ class DtoCLI < Thor
       if comments.empty?
         puts "Nenhum comentário encontrado.".send(cor.to_sym)
       else
-        comments.each_with_index do |c, i|
-          puts "#{i + 1}. #{c[:author]}: #{c[:text]}".send(cor.to_sym)
+        comments.reverse!.each_with_index do |c, i|
+          puts "#{i + 1}. #{c[:author]}: #{c[:text]} - #{c[:published_at]}".send(cor.to_sym)
         end
       end
     elsif options[:perfil_id]

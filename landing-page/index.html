@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DTO CLI - Gere DTOs e Scaffolds Automaticamente</title>
-  <meta name="description" content="Transforme JSON/SQL em DTOs em segundos. Scaffold projetos backend e frontend com um comando. Open source e free.">
+  <title>DTO CLI - Gere DTOs, CRUDs e Scaffolds Automaticamente</title>
+  <meta name="description" content="Gere DTOs a partir de JSON/URL/SQL. Gere Controllers, Services e Repositories automaticamente. Docker, YouTube API, dashboard web e scaffold de projetos em um unico comando.">
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +17,7 @@
   <nav class="navbar" id="navbar">
     <div class="container nav-content">
       <a href="#" class="nav-logo">
-        <span class="logo-icon">&#123;&#125;</span>
+        <span class="logo-icon">{}</span>
         DTO CLI
       </a>
       <ul class="nav-links">
@@ -44,13 +44,11 @@
         Open Source &bull; v0.1.0
       </div>
       <h1>
-        Gere DTOs, Controllers<br>
-        e Services <span class="text-gradient">em Segundos</span>
+        Gere DTOs, CRUDs e<br>
+        Scaffolds <span class="text-gradient">em Segundos</span>
       </h1>
       <p class="hero-description">
-        Transforme JSON, URLs e schemas SQL em DTOs tipados automaticamente.
-        Gere Controllers, Services e Repositories completos com um comando.
-        Scaffold projetos backend e frontend.
+        Gere DTOs a partir de qualquer URL de JSON ou schema SQL. Gere Controllers, Services e Repositories automaticamente. Scaffold projetos backend/frontend. Dockerfile e docker-compose em um clique. Dashboard web, integracao com YouTube API e historico local.
         <strong>Ruby, CLI, sem burocracia.</strong>
       </p>
       <div class="hero-actions">
@@ -76,20 +74,33 @@
         <div class="terminal-body">
           <div class="terminal-line">
             <span class="prompt">$</span>
-            <span class="command">dto-cli-dev gerar </span><span class="flag">--url </span><span class="value">https://api.exemplo.com/usuarios</span><span class="flag"> --lang </span><span class="value">ts </span><span class="flag">--nome_classe </span><span class="value">Usuario</span><span class="flag"> --tipo </span><span class="value">class</span>
+            <span class="command">dto-cli-dev gerar_crud </span>
+            <span class="flag">--url </span>
+            <span class="value">https://api.exemplo.com/users</span>
+            <span class="flag"> --lang </span>
+            <span class="value">dotnet</span>
           </div>
           <div class="terminal-output">
-<span class="keyword">export class</span> <span class="typ">Geo</span> {
-  <span class="prop">lat</span>: <span class="typ">string</span>;
-  <span class="prop">lng</span>: <span class="typ">string</span>;
-}
+<span class="keyword">Gerados com sucesso:</span>
+  <span class="typ">- UserController.cs</span>
+  <span class="typ">- UserService.cs</span>
+  <span class="typ">- UserRepository.cs</span>
 
-<span class="keyword">export class</span> <span class="typ">Usuario</span> {
-  <span class="prop">id</span>: <span class="typ">number</span>;
-  <span class="prop">nome</span>: <span class="typ">string</span>;
-  <span class="prop">email</span>: <span class="typ">string</span>;
-  <span class="prop">endereco</span>: <span class="typ">Geo</span>;
-}
+Total: <span class="prop">3 controllers, 3 services, 3 repositories</span>
+          </div>
+          <div class="terminal-line">
+            <span class="prompt">$</span>
+            <span class="command">dto-cli-dev docker </span>
+            <span class="flag">--stack </span>
+            <span class="value">fastapi</span>
+            <span class="flag"> --services </span>
+            <span class="value">api,postgres,redis</span>
+          </div>
+          <div class="terminal-output">
+  <span class="typ">- Dockerfile</span>
+  <span class="typ">- docker-compose.yml</span>
+
+  <span class="prop">3 servicos configurados</span>
           </div>
           <div class="terminal-cursor">
             <span class="prompt">$</span>
@@ -117,6 +128,7 @@
         <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/fastapi/fastapi-original.svg" alt="FastAPI"> FastAPI</span>
         <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" alt="React"> React</span>
         <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/nextjs/nextjs-original.svg" alt="Next.js"> Next.js</span>
+        <span class="stack-badge"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/docker/docker-original.svg" alt="Docker"> Docker</span>
       </div>
     </div>
   </section>
@@ -128,7 +140,7 @@
         <span class="section-label">Recursos</span>
         <h2>Do JSON ao DTO.<br>Do scaffold ao deploy.</h2>
         <p class="section-description">
-          Duas ferramentas em uma: gerador de DTOs inteligente + scaffold de projetos com Clean Architecture e microservicos.
+          Oito comandos, uma unica CLI. Gerador de DTOs, CRUD, Docker, YouTube API, dashboard web e scaffold de projetos. Tudo em ferramentas de linha de comando.
         </p>
       </div>
       <div class="features-grid">
@@ -136,57 +148,64 @@
           <div class="feature-icon">
             <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
           </div>
-          <h3>JSON to DTO</h3>
-          <p>Envie uma URL de qualquer JSON API e receba DTOs tipados automaticamente em TypeScript, C# ou Python.</p>
+          <h3>JSON / URL to DTO</h3>
+          <p>Passe uma URL de qualquer API JSON e receba DTOs tipados em <code>ts</code>, <code>cs</code>, <code>py</code>, <code>go</code>, <code>java</code>, <code>kotlin</code>, <code>swift</code> ou <code>rust</code>.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">
             <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
           </div>
           <h3>SQL to DTO</h3>
-          <p>Aponte para um schema SQL e gere DTOs automaticamente. Ideal para quem migra de sistemas legacy.</p>
+          <p>Aponte para um schema SQL e gere DTOs automaticamente. Ideal para quem integra com bancos existentes.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">
             <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           </div>
           <h3>Geracao de CRUD</h3>
-          <p>De JSON a Controllers, Services e Repositories completos com endpoints REST (GET, POST, PUT, DELETE). Suporta .NET, Node, Python e TypeScript.</p>
+          <p>De JSON a Controllers, Services e Repositories completos com endpoints REST. Suporta .NET, Node.js, Python e TypeScript.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">
-            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20"/><path d="M5 20V8l7-5 7 5v12"/><path d="M9 20v-4h6v4"/><path d="M9 12h6"/></svg>
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3>Docker Automatico</h3>
+          <p>Gere Dockerfiles otimizados e docker-compose.yml com 15+ servicos (Postgres, Redis, Mongo, Nginx, RabbitMQ, MinIO, etc).</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20h20"/><path d="M5 20V8l7-5 7 5v12"/><path d="M9 20v-4h6v4"/></svg>
           </div>
           <h3>Scaffold de Projetos</h3>
-          <p>Crie a estrutura de projetos backend (.NET, FastAPI, Rails, NestJS) e frontend (React, Vue, Angular, Next) em segundos.</p>
+          <p>Crie estruturas backend (.NET, FastAPI, Rails, NestJS, Node, Flask) e frontend (React, Vue, Angular, Next, Nuxt) com Clean Architecture.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">
             <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><circle cx="6" cy="6" r="1"/><circle cx="6" cy="18" r="1"/></svg>
           </div>
-          <h3>Clean Architecture</h3>
-          <p>Use <code>--clean</code> para gerar projetos com estrutura de microservicos, separacao por camadas e boas praticas.</p>
-        </div>
-        <div class="feature-card">
-          <div class="feature-icon">
-            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          </div>
-          <h3>Open Source</h3>
-          <p>Projeto aberto, feito pela comunidade e para a comunidade. Contribua, reporte bugs e sugira melhorias.</p>
+          <h3>Microservicos</h3>
+          <p>Use <code>init microservice</code> para gerar estrutura de microservicos com stacks escolhidas e mensageria RabbitMQ.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">
             <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>
           </div>
-          <h3>Docker Automatico</h3>
-          <p>Gere Dockerfiles otimizados e docker-compose.yml com 14+ servicos prontos (Postgres, Redis, Mongo, Nginx, etc).</p>
+          <h3>YouTube API</h3>
+          <p>Liste videos de um canal, leia todos os comentarios de um video e responda comentarios diretamente do terminal.</p>
         </div>
         <div class="feature-card">
           <div class="feature-icon">
             <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </div>
-          <h3>Historico de Comandos</h3>
-          <p>Banco SQLite local salva seu historico de comandos para referencia futura e consulta rapida.</p>
+          <h3>Dashboard Web + API REST</h3>
+          <p>Acesso via navegador com <code>ruby lib/server/app.rb</code>. Gere DTOs e CRUDs com preview, syntax highlighting e API para pipelines CI/CD.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">
+            <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <h3>Historico Local</h3>
+          <p>Banco SQLite local salva cada comando executado. Consulte com <code>historico --query</code> e filtre por nome ou data.</p>
         </div>
       </div>
     </div>
@@ -197,14 +216,14 @@
     <div class="container">
       <div class="section-header">
         <span class="section-label">Como Funciona</span>
-        <h2>Tres comandos.<br>Projeto completo.</h2>
+        <h2>Dois passos.<br>Projeto completo.</h2>
       </div>
       <div class="steps">
         <div class="step">
           <div class="step-number">1</div>
           <h3>Instale a CLI</h3>
           <div class="code-block">
-            <code>gem install ./dto-cli-0.1.0.gem</code>
+            <code>git clone https://github.com/LUC4Slap/cli-dto && cd cli-dto && bundle install</code>
           </div>
         </div>
         <div class="step-arrow">
@@ -212,19 +231,9 @@
         </div>
         <div class="step">
           <div class="step-number">2</div>
-          <h3>Gere DTOs + CRUD</h3>
+          <h3>Use a vontade</h3>
           <div class="code-block">
-            <code>dto-cli-dev gerar_crud --input user.json --lang dotnet --path ./src</code>
-          </div>
-        </div>
-        <div class="step-arrow">
-          <svg viewBox="0 0 60 40" fill="none" stroke="currentColor" stroke-width="2"><line x1="0" y1="20" x2="45" y2="20"/><polyline points="35 10 50 20 35 30"/></svg>
-        </div>
-        <div class="step">
-          <div class="step-number">3</div>
-          <h3>Scaffold do projeto</h3>
-          <div class="code-block">
-            <code>dto-cli-dev init backend dotnet minha-api --clean</code>
+            <code>dto-cli-dev gerar --url https://jsonplaceholder.typicode.com/users --lang ts</code>
           </div>
         </div>
       </div>
@@ -247,15 +256,16 @@
           <div class="pricing-header">
             <h3>Community</h3>
             <div class="pricing-price">Gratis</div>
-            <p>Para desenvolvedores que querem agilidade no dia a dia.</p>
+            <p>Para desenvolvedores que querem produtividade no dia a dia.</p>
           </div>
           <ul class="pricing-features">
-            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Gerador de DTO a partir de JSON</li>
-            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> TypeScript, C# e Python</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Gerador de DTO a partir de JSON/URL</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> 8 linguagens (TS, C#, Python, Go, Java, Kotlin, Swift, Rust)</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Geracao de Controllers, Services e Repositories</li>
-            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> .NET, Node.js, FastAPI e TypeScript</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Dockerfile e docker-compose automatico</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Scaffold de projetos frontend/backend</li>
-            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Output colorido no terminal</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Integracao com YouTube API</li>
+            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Dashboard web + API REST (Sinatra)</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Historico de comandos (SQLite local)</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Open Source (MIT License)</li>
           </ul>
@@ -278,7 +288,6 @@
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> <strong>Tudo do Community</strong> e mais:</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> DTO a partir de SQL Schema</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Templates personalizados</li>
-            <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Geracao de Docker e Docker Compose</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Historico na nuvem (sync entre maquinas)</li>
             <li><svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Suporte prioritario via Discord</li>
           </ul>
@@ -312,9 +321,9 @@
     <div class="container">
       <div class="cta-content">
         <h2>Pronto para parar de escrever DTOs manualmente?</h2>
-        <p>Instale a CLI, rode um comando e tenha o resultado em segundos. Open source, gratuito e sem setup.</p>
+        <p>Clone, instale e rode um comando. Projeto completo em segundos. Open source, gratuito e sem setup.</p>
         <div class="quick-install">
-          <code>gem install dto-cli</code>
+          <code>git clone https://github.com/LUC4Slap/cli-dto && cd cli-dto && bundle install</code>
           <button class="copy-btn" id="copyBtn" aria-label="Copiar comando">
             <svg class="icon-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
           </button>
@@ -329,10 +338,10 @@
     <div class="container footer-content">
       <div class="footer-brand">
         <a href="#" class="footer-logo">
-          <span class="logo-icon">&#123;&#125;</span>
+          <span class="logo-icon">{}</span>
           DTO CLI
         </a>
-        <p>Ferramenta de linha de comando para gerar DTOs e scaffolds automaticamente.</p>
+        <p>Gere DTOs, CRUDs e scaffolds automaticamente pela CLI ou pela web.</p>
         <div class="footer-social">
           <a href="https://github.com/LUC4Slap/cli-dto" target="_blank" aria-label="GitHub">
             <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
