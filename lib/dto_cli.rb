@@ -10,6 +10,7 @@ require_relative 'db/data_base'
 require_relative 'generators/controller_generator'
 require_relative 'generators/docker_generator'
 require_relative 'youtubers/you_tubers'
+require_relative 'search/search'
 
 class DtoCLI < Thor
   def self.exit_on_failure?
@@ -250,5 +251,17 @@ class DtoCLI < Thor
     else
       raise CliError, "Informe --perfil-id (vídeos) ou --video-id (comentários) ou --responder (responder comentário)"
     end
+  end
+
+  desc "busca", "Buscar informações na wikipedia"
+  option :pesquisa, type: :string, required: true
+  option :color, type: :string, required: false, default: "green"
+  def busca
+    @banco.salvar_comando("busca", options.to_s)
+    cls_cor = Cores.new(options[:color])
+    nova_busca = Search.new(options[:pesquisa])
+    busca = nova_busca.buscar
+    # debugger
+    cls_cor.printar_colorido(busca)
   end
 end
