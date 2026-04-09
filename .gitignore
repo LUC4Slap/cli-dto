@@ -38,6 +38,8 @@ Gemfile.lock
 # Arquivo do banco
 *.db
 
+.openclaude-profile.json
+
 # Mac
 .DS_Store
 .AppleDouble
