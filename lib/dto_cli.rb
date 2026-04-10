@@ -11,6 +11,8 @@ require_relative 'generators/controller_generator'
 require_relative 'generators/docker_generator'
 require_relative 'youtubers/you_tubers'
 require_relative 'search/search'
+require 'launchy'
+require_relative 'auth/AuthServer'
 
 class DtoCLI < Thor
   def self.exit_on_failure?
@@ -263,5 +265,39 @@ class DtoCLI < Thor
     busca = nova_busca.buscar
     # debugger
     cls_cor.printar_colorido(busca)
+  end
+
+  desc "login", "Faz autenticação"
+
+  def login
+    server_thread = Thread.new do
+      AuthServer.run!
+    end
+
+    Timeout.timeout(5) do
+      loop do
+        begin
+          TCPSocket.new('localhost', 4567).close
+          break
+        rescue
+          sleep 0.1
+        end
+      end
+    end
+
+    Launchy.open("http://localhost:4567/login")
+    puts "Aguardando autenticação..."
+
+    server_thread.join
+    session_path = File.expand_path("~/.dto-cli-session")
+
+    if File.exist?(session_path)
+      session = JSON.parse(File.read(session_path))
+
+      puts "Usuário autenticado: #{session['user']}"
+      puts "Token: #{session['token']}"
+    else
+      puts "Login cancelado ou falhou."
+    end
   end
 end

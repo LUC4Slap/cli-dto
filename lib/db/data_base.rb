@@ -8,6 +8,7 @@ class Database
   def initialize()
     @cor_texto = Cores.new("yellow")
     @db = criar_banco
+    @db.results_as_hash = true
   end
 
   def salvar_comando(nome, comando)
@@ -79,6 +80,14 @@ class Database
     @db.execute("SELECT * FROM crud_salvos ORDER BY criado_em DESC").map do |row|
       { id: row[0], lang: row[1], codigo: row[2], entidades: row[3], criado_em: row[4] }
     end
+  end
+
+  def cadastrar_usuario(nome, email, password)
+    @db.execute('INSERT INTO usuario (nome, email, password) VALUES (?, ?, ?)', [nome, email, password])
+  end
+
+  def login(email)
+    @db.execute('SELECT * FROM usuario where email = ?', [email]).first
   end
 
   # ============================================
@@ -211,6 +220,17 @@ class Database
       );
       SQL
     end
+
+    unless tables.include?("usuario")
+      db.execute <<-SQL
+        CREATE TABLE IF NOT EXISTS usuario (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT,
+            email TEXT,
+            password TEXT
+        );
+      SQL
+    end
   end
 
   def criar_tabelas(db)
@@ -238,6 +258,13 @@ class Database
       codigo TEXT,
       entidades TEXT,
       criado_em DATETIME
+    );
+
+    CREATE TABLE IF NOT EXISTS usuario (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nome TEXT,
+      email TEXT,
+      password TEXT
     );
     SQL
   end
