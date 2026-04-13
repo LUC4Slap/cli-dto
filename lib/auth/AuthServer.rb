@@ -21,10 +21,11 @@ class AuthServer < Sinatra::Base
   post '/login' do
     begin
       user = @db.login(params[:email])
+      debugger
       if !user.empty?
         senha_confere = verificar_senha(params[:password], user['password'])
         if senha_confere
-          token = gerar_token(user);
+          token = gerar_token(user)
           session_data = {
             token: token,
             user: {
@@ -42,7 +43,11 @@ class AuthServer < Sinatra::Base
             sleep 1
             Process.kill("INT", Process.pid)
           end
-          return "Usuario logado!"
+          return """
+            <div style='text-align: center; border: 1px solid green; width: 80%; border-radius: 8px;'>
+              <h1 style='color: green'>Usuario logado!</h1>
+            </div>
+          """
         end
         File.write(
           File.expand_path("~/.dto-cli-session"),
@@ -91,7 +96,7 @@ class AuthServer < Sinatra::Base
       debugger
       @db.cadastrar_usuario(params[:nome], params[:email], pass_hash)
       session_data = {
-        token: "fake-token",
+        token: gerar_token({nome: params[:nome], email: params[:email]}),
         user: {
           email: params[:email]
         },
