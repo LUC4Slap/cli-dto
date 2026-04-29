@@ -237,6 +237,72 @@ Total: <span class="prop">3 controllers, 3 services, 3 repositories</span>
           </div>
         </div>
       </div>
+      
+      <!-- Example Response -->
+      <div class="example-response">
+        <h3>Exemplo de Resposta</h3>
+        <p class="example-description">Ao executar o comando acima, a ferramenta busca o JSON da URL e gera automaticamente os DTOs tipados:</p>
+        <div class="terminal">
+          <div class="terminal-header">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="terminal-title">Saida da CLI</span>
+          </div>
+          <div class="terminal-body">
+            <div class="terminal-output">
+<span class="keyword">✓</span> Buscando JSON da URL...
+<span class="keyword">✓</span> Analisando estrutura...
+<span class="keyword">✓</span> Gerando DTOs em TypeScript...
+
+<span class="prop">Arquivos gerados:</span>
+  <span class="typ">└── User.ts</span>
+      <span class="comment">├── Interface User</span>
+      <span class="comment">├── Interface Address</span>
+      <span class="comment">├── Interface Geo</span>
+      <span class="comment">└── Interface Company</span>
+
+<span class="keyword">Sucesso!</span> <span class="value">4 interfaces</span> geradas em <span class="value">User.ts</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="code-preview">
+          <div class="code-preview-header">
+            <span class="file-name">User.ts</span>
+            <span class="file-badge">TypeScript</span>
+          </div>
+          <pre><code><span class="keyword">export interface</span> <span class="typ">User</span> {
+  <span class="prop">id</span>: <span class="typ">number</span>;
+  <span class="prop">name</span>: <span class="typ">string</span>;
+  <span class="prop">username</span>: <span class="typ">string</span>;
+  <span class="prop">email</span>: <span class="typ">string</span>;
+  <span class="prop">address</span>: <span class="typ">Address</span>;
+  <span class="prop">phone</span>: <span class="typ">string</span>;
+  <span class="prop">website</span>: <span class="typ">string</span>;
+  <span class="prop">company</span>: <span class="typ">Company</span>;
+}
+
+<span class="keyword">export interface</span> <span class="typ">Address</span> {
+  <span class="prop">street</span>: <span class="typ">string</span>;
+  <span class="prop">suite</span>: <span class="typ">string</span>;
+  <span class="prop">city</span>: <span class="typ">string</span>;
+  <span class="prop">zipcode</span>: <span class="typ">string</span>;
+  <span class="prop">geo</span>: <span class="typ">Geo</span>;
+}
+
+<span class="keyword">export interface</span> <span class="typ">Geo</span> {
+  <span class="prop">lat</span>: <span class="typ">string</span>;
+  <span class="prop">lng</span>: <span class="typ">string</span>;
+}
+
+<span class="keyword">export interface</span> <span class="typ">Company</span> {
+  <span class="prop">name</span>: <span class="typ">string</span>;
+  <span class="prop">catchPhrase</span>: <span class="typ">string</span>;
+  <span class="prop">bs</span>: <span class="typ">string</span>;
+}</code></pre>
+        </div>
+      </div>
     </div>
   </section>
 

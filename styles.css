@@ -604,6 +604,101 @@ img { max-width: 100%; }
 
 .step-arrow svg { width: 50px; height: 40px; }
 
+/* Example Response */
+.example-response {
+  margin-top: 80px;
+  text-align: center;
+}
+
+.example-response h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.example-description {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  margin-bottom: 32px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.example-response .terminal {
+  max-width: 800px;
+  margin: 0 auto 32px;
+  text-align: left;
+}
+
+.example-response .terminal-output .comment {
+  color: var(--text-muted);
+  margin-left: 24px;
+}
+
+.code-preview {
+  max-width: 800px;
+  margin: 0 auto;
+  background: var(--bg-terminal);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  text-align: left;
+  box-shadow: var(--shadow);
+}
+
+.code-preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 20px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+}
+
+.file-name {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.file-badge {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  background: var(--bg-terminal);
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+}
+
+.code-preview pre {
+  margin: 0;
+  padding: 24px;
+  overflow-x: auto;
+}
+
+.code-preview code {
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  display: block;
+}
+
+.code-preview .keyword {
+  color: #c084fc;
+  font-weight: 600;
+}
+
+.code-preview .typ {
+  color: #67e8f9;
+}
+
+.code-preview .prop {
+  color: #fbbf24;
+}
+
 /* ============================================
    Pricing
    ============================================ */
