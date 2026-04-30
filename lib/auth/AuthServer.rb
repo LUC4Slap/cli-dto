@@ -21,7 +21,7 @@ class AuthServer < Sinatra::Base
   post '/login' do
     begin
       user = @db.login(params[:email])
-      debugger
+      
       if !user.empty?
         senha_confere = verificar_senha(params[:password], user['password'])
         if senha_confere
@@ -43,12 +43,13 @@ class AuthServer < Sinatra::Base
             sleep 1
             Process.kill("INT", Process.pid)
           end
-          return """
-            <div style='text-align: center; border: 1px solid green; width: 80%; border-radius: 8px;'>
-              <h1 style='color: green'>Usuario logado!</h1>
-            </div>
-          """
+          
+          @icon = 'bi bi-check-lg'
+          @title = 'Login realizado com sucesso!'
+          @message = 'Você será redirecionado em instantes...'
+          return erb :'auth/success'
         end
+        
         File.write(
           File.expand_path("~/.dto-cli-session"),
           JSON.pretty_generate({})
@@ -57,7 +58,12 @@ class AuthServer < Sinatra::Base
           sleep 1
           Process.kill("INT", Process.pid)
         end
-        "Usuario ou senha incorreto!"
+        
+        @type = 'danger'
+        @icon = 'bi bi-x-lg'
+        @title = 'Credenciais inválidas'
+        @message = 'Email ou senha incorretos. Verifique seus dados e tente novamente.'
+        erb :'auth/error'
       else
         File.write(
           File.expand_path("~/.dto-cli-session"),
@@ -67,9 +73,14 @@ class AuthServer < Sinatra::Base
           sleep 1
           Process.kill("INT", Process.pid)
         end
-        "Usuario ou senha incorreto!"
+        
+        @type = 'danger'
+        @icon = 'bi bi-x-lg'
+        @title = 'Credenciais inválidas'
+        @message = 'Email ou senha incorretos. Verifique seus dados e tente novamente.'
+        erb :'auth/error'
       end
-    rescue
+    rescue => e
       File.write(
         File.expand_path("~/.dto-cli-session"),
         JSON.pretty_generate({})
@@ -78,11 +89,12 @@ class AuthServer < Sinatra::Base
         sleep 1
         Process.kill("INT", Process.pid)
       end
-      """
-        <div style='text-align: center; border: 1px solid red; width: 80%; border-radius: 8px;'>
-          <h1 style='color: red'>Ops... Ocorreu um erro! tente mais tarde</h1>
-        </div>
-      """
+
+      @type = 'warning'
+      @icon = 'bi bi-exclamation-triangle'
+      @title = 'Ops! Algo deu errado'
+      @message = 'Ocorreu um erro inesperado. Por favor, tente novamente mais tarde.'
+      erb :'auth/error'
     end
   end
 
@@ -93,8 +105,8 @@ class AuthServer < Sinatra::Base
   post '/create' do
     begin
       pass_hash = encriptar_senha(params[:password])
-      debugger
       @db.cadastrar_usuario(params[:nome], params[:email], pass_hash)
+      
       session_data = {
         token: gerar_token({nome: params[:nome], email: params[:email]}),
         user: {
@@ -112,11 +124,28 @@ class AuthServer < Sinatra::Base
         sleep 1
         Process.kill("INT", Process.pid)
       end
-      "Cadastrado com sucesso."
+      
+      @icon = 'bi bi-person-check'
+      @title = 'Cadastro realizado com sucesso!'
+      @message = 'Bem-vindo ao DTO CLI. Você será redirecionado em instantes...'
+      erb :'auth/success'
+    rescue StandardError => e
+      File.write(
+        File.expand_path("~/.dto-cli-session"),
+        JSON.pretty_generate({})
+      )
+      
+      Thread.new do
+        sleep 1
+        Process.kill("INT", Process.pid)
+      end
+      
+      @type = 'warning'
+      @icon = 'bi bi-exclamation-triangle'
+      @title = 'Erro ao criar conta'
+      @message = 'Não foi possível criar sua conta. Verifique se o email já está cadastrado ou tente novamente mais tarde.'
+      erb :'auth/error'
     end
-  rescue StandardError => e
-    puts "💥 Erro inesperado: #{e.message}"
-    exit(1)
   end
 
 end
